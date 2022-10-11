@@ -1,0 +1,13 @@
+@mixin heading-s-mixin {
+  font: $heading-s;
+  letter-spacing: 2.4px;
+}
+
+h1 {
+  font: $heading-xl;
+}
+
+h4 {
+  @include heading-s-mixin;
+  color: $medium-grey;
+}

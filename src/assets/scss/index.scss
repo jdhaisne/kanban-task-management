@@ -1,0 +1,10 @@
+@use 'reset.scss';
+@import '_variables.scss';
+@import '_font.scss';
+@import '_heading.scss';
+
+
+html {
+  font-family: 'Plus Jakarta Sans';
+  // font: $body-l;
+}
