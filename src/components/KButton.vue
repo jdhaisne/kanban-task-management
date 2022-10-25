@@ -1,5 +1,9 @@
 <template>
-  <button class="button" :class="buttonClasses">
+  <button
+    class="button"
+    :class="buttonClasses"
+    :style="{ width: width + 'px', height: height + 'px' }"
+  >
     <slot></slot>
   </button>
 </template>
@@ -10,6 +14,14 @@ import { computed } from "vue";
 const variant = ["primary", "secondary", "destructive"];
 export default {
   props: {
+    width: {
+      type: Number,
+      default: undefined,
+    },
+    height: {
+      type: Number,
+      default: undefined,
+    },
     variant: {
       type: String,
       default: "primary",
@@ -21,12 +33,19 @@ export default {
       type: Boolean,
       default: false,
     },
+    isDark: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
     const buttonClasses = computed(() => {
       const classes = [`button--${props.variant}`];
       if (props.isBig) {
         classes.push("button--is-big");
+      }
+      if (props.isDark) {
+        classes.push("button--dark");
       }
 
       return classes;
@@ -43,7 +62,6 @@ export default {
 @use "/src/assets/scss/_variables.scss" as *;
 .button {
   background: $main-purple;
-  padding: 8px 69.5px;
   font: $body-l;
   border-radius: 24px;
   color: $white;
@@ -51,7 +69,6 @@ export default {
   border: none;
 
   &--is-big {
-    padding: 15px 61.5px;
     font-size: 15px;
     line-height: 18px;
   }
@@ -63,6 +80,9 @@ export default {
   &--secondary {
     background: rgba($main-purple, 0.1);
     color: $main-purple;
+    &.button--dark {
+      background: $white;
+    }
     &:hover {
       background: rgba($main-purple, 0.25);
       color: $main-purple;

@@ -1,0 +1,20 @@
+$breakpoints-down: ("md": "600px");
+$breakpoints-up: ("xs": "599px");
+
+@mixin xs {
+    @if map-has-key($breakpoints-up, "xs") {
+        @media screen and (max-width: map-get($breakpoints-up, "xs")) {
+            @content
+        }
+    }
+    
+};
+
+@mixin md {
+    @if map-has-key($breakpoints-down, "md") {
+        @media screen and (min-width: map-get($breakpoints-down, "md")) {
+            @content
+        }
+    }
+    
+};

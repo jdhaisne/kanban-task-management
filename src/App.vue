@@ -1,23 +1,15 @@
 <template>
-  <div>
-    <h1>Heading (XL)</h1>
-    <h4>Heading (S)</h4>
-    <KButton>Button Primary (S)</KButton>
-    <KButton variant="secondary">Button Secondary(S)</KButton>
-    <KButton variant="destructive">Button Destructive (S)</KButton>
-    <KButton isBig>Button Primary (L)</KButton>
-    <KButton variant="secondary" isBig>Button Secondary(S)</KButton>
-    <KButton variant="destructive" isBig>Button Destructive (S)</KButton>
-  </div>
+  <KHeaderBar></KHeaderBar>
+  <KSideBar></KSideBar>
+  <router-view></router-view>
 </template>
 
 <script>
-import KButton from "./components/KButton.vue";
+import KHeaderBar from "./components/KHeaderBar.vue";
+import KSideBar from "./components/KSideBar.vue";
 
 export default {
-  components: {
-    KButton,
-  },
+  components: { KHeaderBar, KSideBar },
 };
 </script>
 <style lang="scss" scoped></style>
