@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar" :class="{ 'sidebar--visible': isInModal }">
     <div class="sidebar__list">
       <h2 class="sidebar__list__title">All Boards({{ boardListLength }})</h2>
       <div
@@ -8,20 +8,22 @@
         v-for="(item, index) in boardList"
         :key="index"
       >
-        <object
-          data="/src/assets/images/icon-board.svg"
-          height="16"
-          type="image/svg+xml"
+        <span
+          class="sidebar__list__item__icon icon icon--very-small icon-board"
+          :class="{ 'icon--white': index == currentBoard }"
         >
-          <img
-            src="/src/assets/images/icon-board.png"
-            srcset="/src/assets/images/icon-board.svg"
-          />
-        </object>
+        </span>
+
         {{ item }}
       </div>
+      <div class="sidebar__list__item sidebar__list__item--btn">
+        <span
+          class="sidebar__list__item__icon icon icon--very-small icon--purple icon-board"
+        ></span>
+        + Create New Board
+      </div>
     </div>
-    <div class="sidebar__theme">theme</div>
+    <KThemeSlider class="sidebar__theme"></KThemeSlider>
     <div class="sidebar__hide">hide</div>
   </div>
 </template>
@@ -29,7 +31,13 @@
 <script>
 import { computed, ref } from "vue";
 export default {
-  setup() {
+  props: {
+    isInModal: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup(props) {
     const boardList = ["Plateform Launch", "Marketing Plan", "Roadmap"];
     let currentBoard = ref(0);
 
@@ -43,27 +51,39 @@ export default {
 
 <style lang="scss" scoped>
 @use "/src/assets/scss/_variables.scss" as *;
+@use "src/assets/scss/_mixins.scss" as *;
 
 .sidebar {
-  background-color: $white;
-  border-right: 1px solid $border-color;
-  width: 300px;
-  height: 85%;
-  float: left;
+  display: none;
+  &--visible {
+    display: initial;
+  }
+  @include respond-to("medium") {
+    display: initial;
+    background-color: $white;
+    border-right: 1px solid $border-color;
+    width: 300px;
+    height: 90%;
+    float: left;
+  }
+
   &__list {
     font: $heading-m;
     &__title {
-      padding: 5px;
+      margin: 15px;
+
       color: $medium_grey;
     }
     &__item {
       color: $medium-grey;
-      padding: 5px;
+      padding: 10px;
       margin-right: 20px;
-      & > img {
-        height: 16px;
+      &__icon {
         float: left;
-        margin-right: 5px;
+        margin: auto 10px;
+      }
+      &--btn {
+        color: $main-purple;
       }
       &--current {
         background-color: $main-purple;

@@ -1,0 +1,69 @@
+
+
+.icon {
+    display: inline-block;
+  width: 70px;
+  height: 70px;
+  background: $medium-grey;
+  
+  &-board {
+    mask:url('/src/assets/images/icon-board.svg');
+  }
+  &-chevron-up {
+    mask: url('/src/assets/images/icon-chevron-up.svg');
+    background: #635FC7;
+  }
+  &-cross {
+    mask: url('/src/assets/images/icon-cross.svg');
+  }
+  &-dark-theme {
+    mask: url('/src/assets/images/icon-dark-theme.svg');
+  }
+  &-hide-sidebar {
+    mask: url('/src/assets/images/icon-hide-sidebar.svg');
+  }
+  &-light-theme {
+    mask: url('/src/assets/images/icon-light-theme.svg');
+  }
+  &-show-sidebar {
+    mask: url('/src/assets/images/icon-show-sidebar.svg');
+    background-color: #fff;
+  }
+  &-vertical-ellipsis {
+    mask: url('/src/assets/images/icon-vertical-ellipsis.svg');
+  }
+  &-add-task-mobile {
+    mask: url('/src/assets/images/icon-add-task-mobile.svg');
+    background-color: #fff;
+  }
+  &-check {
+    mask: url('/src/assets/images/icon-check.svg');
+    background-color: #fff;
+  }
+  &-chevron-down {
+    mask: url('/src/assets/images/icon-chevron-down.svg');
+    background: #635FC7;
+  }
+  &--white {
+    background: $white;
+  }
+  &--purple {
+    background: $main-purple;
+  }
+  &--grey {
+    background: $medium-grey;
+  }
+  &--small {
+    width: 25px;
+    height: 25px;
+  }
+  &--very-small {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.icon {
+    mask-size: cover;
+}
+
