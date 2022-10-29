@@ -1,31 +1,51 @@
 <template>
-  <div class="headerBar">
-    <div class="headerBar__logo__wrapper">
-      <picture>
-        <source
-          media="(min-width: 768px)"
-          srcset="/src/assets/images/logo-dark.svg"
-        />
-        <source
-          media="(max-width: 767px)"
-          srcset="/src/assets/images/logo-mobile.svg"
-        />
-        <img
-          class="headerBar__logo"
-          src="/src/assets/images/logo-mobile.svg"
-          alt="kanban logo"
-        />
-      </picture>
+  <div
+    class="headerbar"
+    :class="{ 'headerbar--dark': responsiveStore.isDarkTheme }"
+  >
+    <div
+      class="headerbar__logo__wrapper"
+      :class="{
+        'headerbar__logo__wrapper--dark': responsiveStore.isDarkTheme,
+        'headerbar__logo__wrapper--border': responsiveStore.isSidebarHidden,
+      }"
+    >
+      <img
+        v-if="
+          responsiveStore.getScreenType != 'small' &&
+          !responsiveStore.isDarkTheme
+        "
+        class="headerbar__logo"
+        src="/src/assets/images/logo-dark.svg"
+        alt="kanban logo dark"
+      />
+      <img
+        v-else-if="responsiveStore.getScreenType != 'small'"
+        class="headerbar__logo"
+        src="/src/assets/images/logo-light.svg"
+        alt="kanban logo light"
+      />
+      <img
+        v-else
+        class="headerbar__logo"
+        src="/src/assets/images/logo-mobile.svg"
+        alt="kanban logo"
+      />
     </div>
-    <div class="headerBar__title__wrapper">
+    <div
+      class="headerbar__title__wrapper"
+      :class="{
+        'headerbar__title__wrapper--dark': responsiveStore.isDarkTheme,
+      }"
+    >
       <h1
         v-if="responsiveStore.getScreenType != 'small'"
-        class="headerBar__title"
+        class="headerbar__title"
       >
-        {{ pageTitle }}
+        {{ boardsStore.getCurrentBoard.name }}
       </h1>
-      <h1 v-else class="headerBar__title" @click="toggleModal">
-        {{ pageTitle }}
+      <h1 v-else class="headerbar__title" @click="toggleModal">
+        {{ boardsStore.getCurrentBoard.name }}
         <img
           v-if="!isModalVisible"
           src="/src/assets/images/icon-chevron-down.svg"
@@ -38,32 +58,22 @@
         />
       </h1>
     </div>
-    <div class="headerBar__right">
+    <div
+      class="headerbar__right"
+      :class="{ 'headerbar__right--dark': responsiveStore.isDarkTheme }"
+    >
       <KButton
         v-if="responsiveStore.getScreenType != 'small'"
-        class="headerBar__right__button"
-        t="48"
+        class="headerbar__right__button"
+        :height="48"
         :width="164"
       >
-        <img
-          src="/src/assets/images/icon-add-task-mobile.svg"
-          alt="plus sign"
-        />
-        Add New Task</KButton
+        + Add New Task</KButton
       >
-      <KButton
-        v-else
-        class="headerBar__right__button"
-        t="48"
-        :width="48"
-        :height="32"
-      >
-        <img
-          src="/src/assets/images/icon-add-task-mobile.svg"
-          alt="plus sign"
-        />
+      <KButton v-else class="headerbar__right__button" :width="48" :height="32">
+        <span class="icon icon--very-small icon-add-task-mobile"></span>
       </KButton>
-      <div class="headerBar__right__menu__wrapper">
+      <div class="headerbar__right__menu__wrapper">
         <img
           class="headeBar__right__menu"
           src="/src/assets/images/icon-vertical-ellipsis.svg"
@@ -72,6 +82,7 @@
     </div>
     <div
       class="modal"
+      :class="{ 'modal--dark': responsiveStore.isDarkTheme }"
       v-if="isModalVisible && responsiveStore.getScreenType == 'small'"
     >
       <KSideBar isInModal> </KSideBar>
@@ -102,18 +113,13 @@ import { computed, onMounted, onUnmounted, ref } from "vue";
 import KButton from "./KButton.vue";
 import KSideBar from "./KSideBar.vue";
 import { useResponsiveStore } from "/src/stores/responsive.js";
+import { useBoardsStore } from "../stores/boards";
 export default {
-  props: {
-    pageTitle: {
-      type: String,
-      default: "unnamed",
-    },
-  },
   setup() {
     const responsiveStore = useResponsiveStore();
+    const boardsStore = useBoardsStore();
     const boardList = ["Plateform Launch", "Marketing Plan", "Roadmap"];
     const isModalVisible = ref(false);
-
     const currentBoard = ref(0);
 
     const boardListLength = computed(() => {
@@ -127,8 +133,8 @@ export default {
       console.log("close", event);
       if (
         isModalVisible.value &&
-        !event.target.classList.contains("headerBar__title") &&
-        !event.target.parentNode.classList.contains("headerBar__title")
+        !event.target.classList.contains("headerbar__title") &&
+        !event.target.parentNode.classList.contains("headerbar__title")
       )
         isModalVisible.value = false;
     };
@@ -147,6 +153,7 @@ export default {
       boardList,
       currentBoard,
       boardListLength,
+      boardsStore,
     };
   },
   components: { KButton, KSideBar },
@@ -156,13 +163,17 @@ export default {
 <style lang="scss" scoped>
 @use "/src/assets/scss/_variables.scss" as *;
 @use "src/assets/scss/_mixins.scss" as *;
-.headerBar {
+.headerbar {
   background-color: $white;
   display: flex;
-  height: 10%;
+  height: 64px;
+
   &__logo {
     width: 25px;
     margin: auto 15px;
+    @include respond-to("medium") {
+      width: initial;
+    }
 
     &__wrapper {
       height: 100%;
@@ -172,19 +183,38 @@ export default {
       }
       @include respond-to("medium") {
         width: 300px;
-        border-right: 1px solid $border-color;
+        border-right: 1px solid $lines-light;
+      }
+      &--border {
+        border-bottom: 1px solid $lines-light;
+      }
+      &--dark {
+        border: none;
+        @include respond-to("medium") {
+          border-right: 1px solid $lines;
+          &.headerbar__logo__wrapper--border {
+            border-bottom: 1px solid $lines;
+          }
+        }
       }
     }
   }
   &__title {
     font: $heading-l;
+    cursor: pointer;
     margin: auto 0;
+    margin-left: 20px;
     &__wrapper {
       display: flex;
       height: 100%;
       flex-grow: 1;
       @include respond-to("medium") {
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid $lines-light;
+      }
+      &--dark {
+        @include respond-to("medium") {
+          border-bottom: 1px solid $lines;
+        }
       }
     }
     & > img {
@@ -195,7 +225,7 @@ export default {
     height: 100%;
     display: flex;
     @include respond-to("medium") {
-      border-bottom: 1px solid $border-color;
+      border-bottom: 1px solid $lines-light;
     }
     margin-left: auto;
     &__button {
@@ -211,15 +241,30 @@ export default {
         margin: auto 10px;
       }
     }
+    &--dark {
+      @include respond-to("medium") {
+        border-bottom: 1px solid $lines;
+      }
+    }
+  }
+  &--dark {
+    background-color: $dark-grey;
+    color: $white;
   }
 }
 .modal {
-  width: 80%;
-  height: 40%;
+  width: 70%;
+  max-width: 300px;
+  height: 48%;
   position: absolute;
   top: 12%;
-  left: 10%;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  margin: auto;
   background-color: white;
   border-radius: 8px;
+  &--dark {
+    background-color: $dark-grey;
+  }
 }
 </style>

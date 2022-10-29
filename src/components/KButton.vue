@@ -4,7 +4,9 @@
     :class="buttonClasses"
     :style="{ width: width + 'px', height: height + 'px' }"
   >
-    <slot></slot>
+    <span class="button__content">
+      <slot></slot>
+    </span>
   </button>
 </template>
 
@@ -67,7 +69,13 @@ export default {
   color: $white;
   outline: none;
   border: none;
-
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  &__content {
+    margin: auto;
+    display: flex;
+  }
   &--is-big {
     font-size: 15px;
     line-height: 18px;

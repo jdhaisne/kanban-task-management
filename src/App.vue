@@ -1,7 +1,9 @@
 <template>
   <KHeaderBar></KHeaderBar>
-  <KSideBar></KSideBar>
-  <router-view></router-view>
+  <div class="main-wrapper">
+    <KSideBar></KSideBar>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -31,4 +33,10 @@ export default {
   components: { KHeaderBar, KSideBar },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.main-wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-grow: 1;
+}
+</style>

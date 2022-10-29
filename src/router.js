@@ -6,6 +6,7 @@ const routes = [
   {
     path: "/",
     component: Board,
+    props: { isEmpty: true },
   },
   {
     path: "/test",

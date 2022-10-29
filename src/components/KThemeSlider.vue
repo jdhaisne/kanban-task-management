@@ -1,15 +1,38 @@
 <template>
-  <div class="theme-slider">
-    <span class="icon icon--very-small icon-light-theme"></span>
-    <KSwitch></KSwitch>
-    <span class="icon icon--very-small icon-dark-theme"></span>
+  <div
+    class="theme-slider"
+    :class="{ 'theme-slider--dark': responsive.isDarkTheme }"
+  >
+    <span
+      class="theme-slider__icon icon icon--very-small icon-light-theme"
+    ></span>
+    <KSwitch
+      :modelValue="darkToggle"
+      @update:modelValue="onChange($event)"
+    ></KSwitch>
+    <span
+      class="theme-slider__icon icon icon--very-small icon-dark-theme"
+    ></span>
   </div>
 </template>
 
 <script>
-import KSwitch from "./KSwitch.vue";
+import { ref } from "vue";
+import { useResponsiveStore } from "../stores/responsive";
 
-export default { components: { KSwitch } };
+export default {
+  setup() {
+    const responsive = useResponsiveStore();
+    const darkToggle = ref(responsive.isDarkTheme);
+
+    const onChange = function (event) {
+      console.log(event);
+      responsive.setDarkTheme(event);
+    };
+
+    return { darkToggle, onChange, responsive };
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -18,10 +41,20 @@ export default { components: { KSwitch } };
 
 .theme-slider {
   width: 80%;
+  height: 48px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   background: $light-grey;
-  margin: auto;
+  margin: 0 auto;
   border-radius: 6px;
+  &__icon {
+    margin: auto 0;
+  }
+  & > .switch {
+    margin: auto 15px;
+  }
+  &--dark {
+    background-color: $very-dark-grey-dark-bg;
+  }
 }
 </style>
