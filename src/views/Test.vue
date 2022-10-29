@@ -47,9 +47,5 @@
   </div>
 </template>
 
-<script>
-export default {
-  components: {},
-};
-</script>
+<script setup></script>
 <style lang="scss" scoped></style>

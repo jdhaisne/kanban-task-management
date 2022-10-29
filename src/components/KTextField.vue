@@ -1,8 +1,10 @@
 <template>
   <div class="textfield__wrapper">
     <input
+      v-bind="$attrs"
       class="textfield"
       type="text"
+      v-model="currentValue"
       :placeholder="placeholder"
       :class="{ 'textfield--error': errorMessage }"
     />
@@ -10,22 +12,30 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    placeholder: {
-      type: String,
-    },
-    errorMessage: {
-      type: String,
-      default: "",
-    },
+<script setup>
+import { computed } from "vue";
+const props = defineProps({
+  placeholder: {
+    type: String,
   },
-  setup(props) {
-    console.log(props.placeholder);
-    return {};
+  errorMessage: {
+    type: String,
+    default: "",
   },
-};
+  modelValue: {
+    type: String,
+    default: "",
+  },
+});
+
+const currentValue = computed({
+  get() {
+    return props.modelValue;
+  },
+  set(newValue) {
+    this.$emit("update:modelValue", newValue);
+  },
+});
 </script>
 
 <style lang="scss" scoped>

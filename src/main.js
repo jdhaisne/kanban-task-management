@@ -8,6 +8,7 @@ import KCheckbox from "./components/KCheckbox.vue";
 import KColumn from "./components/KColumn.vue";
 import KDropdown from "./components/KDropdown.vue";
 import KHeaderBar from "./components/KHeaderBar.vue";
+import KModal from "./components/KModal.vue";
 import KSideBar from "./components/KSideBar.vue";
 import KSwitch from "./components/KSwitch.vue";
 import KTask from "./components/KTask.vue";
@@ -29,6 +30,7 @@ app
   .component("KColumn", KColumn)
   .component("KDropdown", KDropdown)
   .component("KHeaderBar", KHeaderBar)
+  .component("KModal", KModal)
   .component("KSideBar", KSideBar)
   .component("KSwitch", KSwitch)
   .component("KTask", KTask)
@@ -38,6 +40,6 @@ app
   .use(pinia);
 
 const boardsStore = useBoardsStore();
-boardsStore.setBoards(dataBoards.boards);
+boardsStore.setBoards([]);
 
 app.use(router).mount("#app");

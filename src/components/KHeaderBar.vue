@@ -42,10 +42,10 @@
         v-if="responsiveStore.getScreenType != 'small'"
         class="headerbar__title"
       >
-        {{ boardsStore.getCurrentBoard.name }}
+        {{ currentBoardTitle }}
       </h1>
       <h1 v-else class="headerbar__title" @click="toggleModal">
-        {{ boardsStore.getCurrentBoard.name }}
+        {{ currentBoardTitle }}
         <img
           v-if="!isModalVisible"
           src="/src/assets/images/icon-chevron-down.svg"
@@ -64,13 +64,20 @@
     >
       <KButton
         v-if="responsiveStore.getScreenType != 'small'"
+        @click="openCreateTaskModal()"
         class="headerbar__right__button"
         :height="48"
         :width="164"
       >
         + Add New Task</KButton
       >
-      <KButton v-else class="headerbar__right__button" :width="48" :height="32">
+      <KButton
+        v-else
+        class="headerbar__right__button"
+        :width="48"
+        :height="32"
+        @click="openCreateTaskModal()"
+      >
         <span class="icon icon--very-small icon-add-task-mobile"></span>
       </KButton>
       <div class="headerbar__right__menu__wrapper">
@@ -80,13 +87,27 @@
         />
       </div>
     </div>
-    <div
-      class="modal"
-      :class="{ 'modal--dark': responsiveStore.isDarkTheme }"
-      v-if="isModalVisible && responsiveStore.getScreenType == 'small'"
-    >
-      <KSideBar isInModal> </KSideBar>
-    </div>
+    <KModal v-if="isModalVisible">
+      <KSideBar isInModal></KSideBar>
+    </KModal>
+    <KModal v-if="isModalCreateTaskVisible">
+      <form>
+        <label for="title">Title</label>
+        <KTextField
+          id="title"
+          :modelValue="newTask.title"
+          @update:modelValue="(newValue) => (newTask.title = newValue)"
+        />
+
+        <label for="description">Description</label>
+        <KTextField
+          id="description"
+          :modelValue="newTask.desc"
+          @update:modelValue="(newValue) => (newTask.desc = newValue)"
+        />
+      </form>
+    </KModal>
+
     <!-- <div class="modal" v-if="isModalVisible">
       <div class="sidebar__list">
         <h2 class="sidebar__list__title">All Boards({{ boardListLength }})</h2>
@@ -108,56 +129,65 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import KButton from "./KButton.vue";
 import KSideBar from "./KSideBar.vue";
 import { useResponsiveStore } from "/src/stores/responsive.js";
 import { useBoardsStore } from "../stores/boards";
-export default {
-  setup() {
-    const responsiveStore = useResponsiveStore();
-    const boardsStore = useBoardsStore();
-    const boardList = ["Plateform Launch", "Marketing Plan", "Roadmap"];
-    const isModalVisible = ref(false);
-    const currentBoard = ref(0);
 
-    const boardListLength = computed(() => {
-      return boardList.length;
-    });
-    const toggleModal = function (event) {
-      console.log("toggle", event);
-      isModalVisible.value = !isModalVisible.value;
-    };
-    const closeModal = function (event) {
-      console.log("close", event);
-      if (
-        isModalVisible.value &&
-        !event.target.classList.contains("headerbar__title") &&
-        !event.target.parentNode.classList.contains("headerbar__title")
-      )
-        isModalVisible.value = false;
-    };
+const responsiveStore = useResponsiveStore();
+const boardsStore = useBoardsStore();
+const boardList = ["Plateform Launch", "Marketing Plan", "Roadmap"];
+const isModalVisible = ref(false);
+const isModalCreateTaskVisible = ref(false);
+const currentBoard = ref(0);
+const newTask = ref({
+  title: "",
+  desc: "",
+  subTasks: [],
+});
 
-    // onMounted(() => {
-    //   window.addEventListener("click", closeModal);
-    // });
-    // onUnmounted(() => {
-    //   window.removeEventListener("click", closeModal);
-    // });
-
-    return {
-      responsiveStore,
-      isModalVisible,
-      toggleModal,
-      boardList,
-      currentBoard,
-      boardListLength,
-      boardsStore,
-    };
-  },
-  components: { KButton, KSideBar },
+const boardListLength = computed(() => {
+  return boardList.length;
+});
+const toggleModal = function (event) {
+  console.log("toggle", event);
+  isModalVisible.value = !isModalVisible.value;
 };
+const closeModal = function (event) {
+  console.log("close", event);
+  if (
+    isModalVisible.value &&
+    !event.target.classList.contains("headerbar__title") &&
+    !event.target.parentNode.classList.contains("headerbar__title")
+  )
+    isModalVisible.value = false;
+};
+
+const resetNewTask = () => {
+  newTask.value = {
+    title: "",
+    desc: "",
+    subTasks: [],
+  };
+};
+
+const openCreateTaskModal = () => {
+  resetNewTask();
+  isModalCreateTaskVisible.value = true;
+};
+
+const currentBoardTitle = computed(() => {
+  if (boardsStore.getCurrentBoard) return boardsStore.getCurrentBoard.name;
+  return "";
+});
+// onMounted(() => {
+//   window.addEventListener("click", closeModal);
+// });
+// onUnmounted(() => {
+//   window.removeEventListener("click", closeModal);
+// });
 </script>
 
 <style lang="scss" scoped>

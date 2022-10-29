@@ -21,22 +21,18 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
-export default {
-  props: {
-    items: {
-      type: Array,
-      default: [],
-    },
-  },
-  setup(props) {
-    let currentIndex = ref(0);
-    let isVisible = ref(false);
 
-    return { currentIndex, isVisible };
+const props = defineProps({
+  items: {
+    type: Array,
+    default: [],
   },
-};
+});
+
+let currentIndex = ref(0);
+let isVisible = ref(false);
 </script>
 
 <style lang="scss" scoped>

@@ -16,22 +16,16 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from "vue";
 import { useResponsiveStore } from "../stores/responsive";
 
-export default {
-  setup() {
-    const responsive = useResponsiveStore();
-    const darkToggle = ref(responsive.isDarkTheme);
+const responsive = useResponsiveStore();
+const darkToggle = ref(responsive.isDarkTheme);
 
-    const onChange = function (event) {
-      console.log(event);
-      responsive.setDarkTheme(event);
-    };
-
-    return { darkToggle, onChange, responsive };
-  },
+const onChange = function (event) {
+  console.log(event);
+  responsive.setDarkTheme(event);
 };
 </script>
 

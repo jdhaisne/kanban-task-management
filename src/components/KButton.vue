@@ -10,54 +10,52 @@
   </button>
 </template>
 
-<script>
+<script setup>
 import { computed } from "vue";
 
+const props = defineProps({
+  width: {
+    type: Number,
+    default: undefined,
+  },
+  height: {
+    type: Number,
+    default: undefined,
+  },
+  variant: {
+    type: String,
+    default: "primary",
+    validator(value) {
+      return variant.includes(value);
+    },
+  },
+  isBig: {
+    type: Boolean,
+    default: false,
+  },
+  isDark: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+const buttonClasses = computed(() => {
+  const classes = [`button--${props.variant}`];
+  if (props.isBig) {
+    classes.push("button--is-big");
+  }
+  if (props.isDark) {
+    classes.push("button--dark");
+  }
+
+  return classes;
+});
+</script>
+
+<script>
 const variant = ["primary", "secondary", "destructive"];
-export default {
-  props: {
-    width: {
-      type: Number,
-      default: undefined,
-    },
-    height: {
-      type: Number,
-      default: undefined,
-    },
-    variant: {
-      type: String,
-      default: "primary",
-      validator(value) {
-        return variant.includes(value);
-      },
-    },
-    isBig: {
-      type: Boolean,
-      default: false,
-    },
-    isDark: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props) {
-    const buttonClasses = computed(() => {
-      const classes = [`button--${props.variant}`];
-      if (props.isBig) {
-        classes.push("button--is-big");
-      }
-      if (props.isDark) {
-        classes.push("button--dark");
-      }
 
-      return classes;
-    });
-
-    return {
-      buttonClasses,
-    };
-  },
-};
+export default {};
 </script>
 
 <style lang="scss" scoped>

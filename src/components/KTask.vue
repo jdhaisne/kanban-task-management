@@ -40,6 +40,7 @@ const responsiveStore = useResponsiveStore();
   width: 280px;
   background-color: $white;
   border-radius: 8px;
+  box-shadow: 0px 4px 6px $box-shadow-color;
   &__title {
     font: $heading-m;
     &--dark {
