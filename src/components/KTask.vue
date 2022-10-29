@@ -54,5 +54,10 @@ const responsiveStore = useResponsiveStore();
   &--dark {
     background-color: $dark-grey;
   }
+  &:hover {
+    & .task__title {
+      color: $main-purple;
+    }
+  }
 }
 </style>

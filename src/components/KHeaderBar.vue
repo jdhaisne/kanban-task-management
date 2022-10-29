@@ -44,10 +44,10 @@
       >
         {{ currentBoardTitle }}
       </h1>
-      <h1 v-else class="headerbar__title" @click="toggleModal">
+      <h1 v-else class="headerbar__title" @click="openSidebarModal()">
         {{ currentBoardTitle }}
         <img
-          v-if="!isModalVisible"
+          v-if="!isSidebarModalVisible"
           src="/src/assets/images/icon-chevron-down.svg"
           alt="chevron down"
         />
@@ -80,17 +80,23 @@
       >
         <span class="icon icon--very-small icon-add-task-mobile"></span>
       </KButton>
-      <div class="headerbar__right__menu__wrapper">
+      <div
+        class="headerbar__right__menu__wrapper"
+        @click="openModalBoardMenu()"
+      >
         <img
           class="headeBar__right__menu"
           src="/src/assets/images/icon-vertical-ellipsis.svg"
         />
       </div>
     </div>
-    <KModal v-if="isModalVisible">
+    <KModal v-if="isSidebarModalVisible" @behind-click="closeSidebarModal()">
       <KSideBar isInModal></KSideBar>
     </KModal>
-    <KModal v-if="isModalCreateTaskVisible">
+    <KModal
+      v-if="isModalCreateTaskVisible"
+      @behind-click="closeCreateTaskModal()"
+    >
       <form>
         <label for="title">Title</label>
         <KTextField
@@ -107,8 +113,15 @@
         />
       </form>
     </KModal>
+    <KModal
+      v-if="isModalBoardMenuVisible"
+      @behind-click="closeModalBoardMenu()"
+    >
+      <span>Edit Board</span>
+      <span>Delete Board</span>
+    </KModal>
 
-    <!-- <div class="modal" v-if="isModalVisible">
+    <!-- <div class="modal" v-if="isSidebarModalVisible">
       <div class="sidebar__list">
         <h2 class="sidebar__list__title">All Boards({{ boardListLength }})</h2>
         <div
@@ -135,12 +148,14 @@ import KButton from "./KButton.vue";
 import KSideBar from "./KSideBar.vue";
 import { useResponsiveStore } from "/src/stores/responsive.js";
 import { useBoardsStore } from "../stores/boards";
+import KModal from "./KModal.vue";
 
 const responsiveStore = useResponsiveStore();
 const boardsStore = useBoardsStore();
 const boardList = ["Plateform Launch", "Marketing Plan", "Roadmap"];
-const isModalVisible = ref(false);
+const isSidebarModalVisible = ref(false);
 const isModalCreateTaskVisible = ref(false);
+const isModalBoardMenuVisible = ref(false);
 const currentBoard = ref(0);
 const newTask = ref({
   title: "",
@@ -151,18 +166,19 @@ const newTask = ref({
 const boardListLength = computed(() => {
   return boardList.length;
 });
-const toggleModal = function (event) {
-  console.log("toggle", event);
-  isModalVisible.value = !isModalVisible.value;
+
+const openSidebarModal = () => {
+  isSidebarModalVisible.value = true;
 };
-const closeModal = function (event) {
-  console.log("close", event);
-  if (
-    isModalVisible.value &&
-    !event.target.classList.contains("headerbar__title") &&
-    !event.target.parentNode.classList.contains("headerbar__title")
-  )
-    isModalVisible.value = false;
+const closeSidebarModal = function (event) {
+  isSidebarModalVisible.value = false;
+};
+
+const openModalBoardMenu = () => {
+  isModalBoardMenuVisible.value = true;
+};
+const closeModalBoardMenu = () => {
+  isModalBoardMenuVisible.value = false;
 };
 
 const resetNewTask = () => {
@@ -176,6 +192,10 @@ const resetNewTask = () => {
 const openCreateTaskModal = () => {
   resetNewTask();
   isModalCreateTaskVisible.value = true;
+};
+
+const closeCreateTaskModal = () => {
+  isModalCreateTaskVisible.value = false;
 };
 
 const currentBoardTitle = computed(() => {

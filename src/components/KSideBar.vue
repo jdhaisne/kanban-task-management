@@ -32,7 +32,7 @@
         {{ board.name }}
       </div>
       <div
-        @click="createNewBoard"
+        @click="openCreateBoardModal()"
         class="sidebar__list__item sidebar__list__item--btn"
       >
         <span
@@ -77,39 +77,54 @@
           width="16"
         />
       </div>
-      <KModal v-if="isCreateBoardModalVisible">
-        <h2>Add New Board</h2>
-        <form>
-          <label for="boardName">Board Name</label>
-          <KTextField
-            id="boardName"
-            placeholder="e.g web Design"
-            :modelValue="newBoard.name"
-            @update:model.value="(newValue) => (newBoard.name = newValue)"
-          >
-          </KTextField>
-          <template v-for="(column, index) in newBoard.columns" :key="index">
-            <label :for="`column-${index}`">Board Name</label>
-            <KTextField
-              :id="`column-${index}`"
-              placeholder="e.g To Do"
-              :modelValue="newBoard.columns[index].name"
-              @update:model.value="
-                (newValue) => (newBoard.columns[index].name = newValue)
-              "
-            >
-            </KTextField
-          ></template>
-          <KButton> </KButton></form
-      ></KModal>
     </template>
   </div>
+  <KModal v-if="ismodalCreateBoardOpen" @behind-click="closeCreateBoardModal()">
+    <h2>Add New Board</h2>
+
+    <label for="boardName">Board Name</label>
+    <KTextField
+      id="boardName"
+      placeholder="e.g web Design"
+      :modelValue="newBoard.name"
+      @update:modelValue="(newValue) => (newBoard.name = newValue)"
+    >
+    </KTextField>
+    <div>
+      <template v-for="(column, index) in newBoard.columns" :key="index">
+        <KTextField
+          :id="`column-${index}`"
+          placeholder="e.g To Do"
+          :modelValue="newBoard.columns[index].name"
+          @update:modelValue="
+            (newValue) => (newBoard.columns[index].name = newValue)
+          "
+          >{{ newBoard.columns[index].name }}
+        </KTextField></template
+      ><KButton
+        :width="295"
+        :height="40"
+        variant="secondary"
+        @click="addColumn()"
+        >+ Add New Column</KButton
+      >
+      <KButton
+        :width="295"
+        :height="40"
+        variant="secondary"
+        @click="createNewBoard()"
+        >Creat New Board</KButton
+      >
+    </div>
+  </KModal>
 </template>
 
 <script setup>
 import { computed, ref } from "vue";
 import { useResponsiveStore } from "../stores/responsive";
 import { useBoardsStore } from "../stores/boards";
+import KButton from "./KButton.vue";
+import { trackSlotScopes } from "@vue/compiler-core";
 
 const props = defineProps({
   isInModal: {
@@ -121,7 +136,7 @@ const props = defineProps({
 const responsiveStore = useResponsiveStore();
 const boardsStore = useBoardsStore();
 
-const isCreateBoardModalVisible = ref(false);
+const ismodalCreateBoardOpen = ref(false);
 
 const newBoard = ref({
   name: "",
@@ -129,9 +144,31 @@ const newBoard = ref({
 });
 
 const createNewBoard = () => {
-  const label = `board-${boardsStore.boards.length}`;
+  boardsStore.createBoard(newBoard.value);
+  ismodalCreateBoardOpen.value = false;
+};
 
-  boardsStore.createBoard(label);
+const addColumn = () => {
+  newBoard.value.columns.push({
+    name: "",
+    tasks: {},
+  });
+};
+
+const resetNewBoard = () => {
+  newBoard.value = {
+    name: "",
+    columns: [],
+  };
+};
+
+const openCreateBoardModal = () => {
+  resetNewBoard();
+  ismodalCreateBoardOpen.value = true;
+};
+
+const closeCreateBoardModal = () => {
+  ismodalCreateBoardOpen.value = false;
 };
 </script>
 
@@ -154,6 +191,14 @@ const createNewBoard = () => {
       color: $medium-grey;
       padding: 10px;
       margin-right: 20px;
+      &:hover {
+        background-color: $light-grey;
+        border-radius: 0px 100px 100px 0px;
+        color: $main-purple;
+        & .sidebar__list__item__icon {
+          background-color: $main-purple;
+        }
+      }
       &__icon {
         float: left;
         margin: auto 10px;
@@ -167,6 +212,14 @@ const createNewBoard = () => {
         border-radius: 0px 100px 100px 0px;
         & > img {
           color: $white;
+        }
+        &:hover {
+          background-color: $main-purple;
+          color: $white;
+          border-radius: 0px 100px 100px 0px;
+          & .sidebar__list__item__icon {
+            background-color: $white;
+          }
         }
       }
     }

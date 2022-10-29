@@ -40,6 +40,6 @@ app
   .use(pinia);
 
 const boardsStore = useBoardsStore();
-boardsStore.setBoards([]);
+boardsStore.setBoards(dataBoards.boards);
 
 app.use(router).mount("#app");

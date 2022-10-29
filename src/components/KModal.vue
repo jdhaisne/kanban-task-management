@@ -1,14 +1,53 @@
 <template>
   <Teleport to="body">
-    <div class="modal" :class="{ 'modal--dark': responsiveStore.isDarkTheme }">
-      <slot></slot>
+    <div class="modal__behind" @click.self="behindClick">
+      <div
+        class="modal"
+        :class="{ 'modal--dark': responsiveStore.isDarkTheme }"
+        :style="modalStyle"
+      >
+        <slot></slot>
+      </div>
     </div>
   </Teleport>
 </template>
 
 <script setup>
+import { computed } from "vue";
 import { useResponsiveStore } from "../stores/responsive.js";
+
+const props = defineProps({
+  top: {
+    type: String,
+    default: "",
+  },
+  left: {
+    type: String,
+    default: "",
+  },
+  transform: {
+    type: String,
+    default: "",
+  },
+});
+const emit = defineEmits(["behindClick"]);
 const responsiveStore = useResponsiveStore();
+
+const modalStyle = computed(() => {
+  let style = {
+    top: "",
+    left: "",
+    transform: "",
+  };
+  if (props.left) style.left = props.left;
+  if (props.top) style.top = props.top;
+  if (props.transform) style.transform = props.transform;
+  return style;
+});
+
+const behindClick = () => {
+  emit("behindClick");
+};
 </script>
 
 <style lang="scss" scoped>
@@ -26,6 +65,14 @@ const responsiveStore = useResponsiveStore();
   margin: auto;
   background-color: white;
   border-radius: 8px;
+  &__behind {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: none;
+  }
   &--dark {
     background-color: $dark-grey;
   }

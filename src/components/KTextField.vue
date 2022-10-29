@@ -28,12 +28,14 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["update:modelvalue"]);
+
 const currentValue = computed({
   get() {
     return props.modelValue;
   },
   set(newValue) {
-    this.$emit("update:modelValue", newValue);
+    emit("update:modelValue", newValue);
   },
 });
 </script>

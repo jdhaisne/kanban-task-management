@@ -7,11 +7,8 @@ export const useBoardsStore = defineStore("boards", () => {
   const boards = ref([]);
   const currentIndex = ref(0);
 
-  const createBoard = (label) => {
-    boards.value.push({
-      name: label,
-      columns: [],
-    });
+  const createBoard = (newBoard) => {
+    boards.value.push(newBoard);
   };
 
   const addColumn = function (name) {
