@@ -1,6 +1,11 @@
 <template>
-  <div class="task">
-    <h1 class="task__title">{{ taskName }}</h1>
+  <div class="task" :class="{ 'task--dark': responsiveStore.isDarkTheme }">
+    <h1
+      class="task__title"
+      :class="{ 'task__title--dark': responsiveStore.isDarkTheme }"
+    >
+      {{ taskName }}
+    </h1>
     <span class="task__sub"
       >{{ nbSubstaskComplete }} of {{ nbSubstask }} substask</span
     >
@@ -8,6 +13,7 @@
 </template>
 
 <script setup>
+import { useResponsiveStore } from "../stores/responsive";
 const props = defineProps({
   taskName: {
     type: String,
@@ -22,6 +28,8 @@ const props = defineProps({
     default: 0,
   },
 });
+
+const responsiveStore = useResponsiveStore();
 </script>
 
 <style lang="scss" scoped>
@@ -34,10 +42,16 @@ const props = defineProps({
   border-radius: 8px;
   &__title {
     font: $heading-m;
+    &--dark {
+      color: $white;
+    }
   }
   &__sub {
     font: $body-m;
     color: $medium-grey;
+  }
+  &--dark {
+    background-color: $dark-grey;
   }
 }
 </style>

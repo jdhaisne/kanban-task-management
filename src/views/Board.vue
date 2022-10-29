@@ -18,6 +18,12 @@
       :col-name="column.name"
       :tasks="column.tasks"
     ></KColumn>
+    <div
+      class="board__add-btn"
+      :class="{ 'board__add-btn--dark': responsive.isDarkTheme }"
+    >
+      <span class="board__add-btn__text">+ New Column</span>
+    </div>
   </div>
 </template>
 
@@ -67,6 +73,23 @@ export default {
     text-align: center;
     width: 80%;
     margin-bottom: 10px;
+  }
+  &__add-btn {
+    height: 100%;
+    width: 280px;
+    background-color: $new-col-btn;
+    text-align: center;
+    display: flex;
+    border-radius: 6px;
+
+    &__text {
+      margin: auto;
+      font: $heading-xl;
+      color: $medium-grey;
+    }
+    &--dark {
+      background-color: $new-col-btn-dark;
+    }
   }
 }
 </style>

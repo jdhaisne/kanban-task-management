@@ -1,6 +1,9 @@
 <template>
   <KHeaderBar></KHeaderBar>
-  <div class="main-wrapper">
+  <div
+    class="main-wrapper"
+    :class="{ 'main-wrapper--dark': responsiveStore.isDarkTheme }"
+  >
     <KSideBar></KSideBar>
     <router-view></router-view>
   </div>
@@ -34,9 +37,13 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@use "/src/assets/scss/_variables.scss" as *;
 .main-wrapper {
   min-height: 100%;
   display: flex;
   flex-grow: 1;
+  &--dark {
+    background-color: $very-dark-grey-dark-bg;
+  }
 }
 </style>
