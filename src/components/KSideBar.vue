@@ -11,7 +11,9 @@
       class="sidebar__list"
       :class="{ 'sidebar__list--hidden': responsiveStore.isSidebarHidden }"
     >
-      <h2 class="sidebar__list__title">All Boards({{ boardListLength }})</h2>
+      <h2 class="sidebar__list__title">
+        All Boards({{ boardsStore.getNbBoards }})
+      </h2>
       <div
         class="sidebar__list__item"
         :class="{
@@ -29,7 +31,10 @@
 
         {{ board.name }}
       </div>
-      <div class="sidebar__list__item sidebar__list__item--btn">
+      <div
+        @click="createNewBoard"
+        class="sidebar__list__item sidebar__list__item--btn"
+      >
         <span
           class="sidebar__list__item__icon icon icon--very-small icon--purple icon-board"
         ></span>
@@ -72,38 +77,61 @@
           width="16"
         />
       </div>
+      <KModal v-if="isCreateBoardModalVisible">
+        <h2>Add New Board</h2>
+        <form>
+          <label for="boardName">Board Name</label>
+          <KTextField
+            id="boardName"
+            placeholder="e.g web Design"
+            :modelValue="newBoard.name"
+            @update:model.value="(newValue) => (newBoard.name = newValue)"
+          >
+          </KTextField>
+          <template v-for="(column, index) in newBoard.columns" :key="index">
+            <label :for="`column-${index}`">Board Name</label>
+            <KTextField
+              :id="`column-${index}`"
+              placeholder="e.g To Do"
+              :modelValue="newBoard.columns[index].name"
+              @update:model.value="
+                (newValue) => (newBoard.columns[index].name = newValue)
+              "
+            >
+            </KTextField
+          ></template>
+          <KButton> </KButton></form
+      ></KModal>
     </template>
   </div>
 </template>
 
-<script>
+<script setup>
 import { computed, ref } from "vue";
 import { useResponsiveStore } from "../stores/responsive";
 import { useBoardsStore } from "../stores/boards";
-export default {
-  props: {
-    isInModal: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props) {
-    const boardList = ["Plateform Launch", "Marketing Plan", "Roadmap"];
-    const responsiveStore = useResponsiveStore();
-    const boardsStore = useBoardsStore();
-    let currentBoard = ref(0);
 
-    const boardListLength = computed(() => {
-      return boardList.length;
-    });
-    return {
-      boardList,
-      boardListLength,
-      currentBoard,
-      responsiveStore,
-      boardsStore,
-    };
+const props = defineProps({
+  isInModal: {
+    type: Boolean,
+    default: false,
   },
+});
+
+const responsiveStore = useResponsiveStore();
+const boardsStore = useBoardsStore();
+
+const isCreateBoardModalVisible = ref(false);
+
+const newBoard = ref({
+  name: "",
+  columns: [],
+});
+
+const createNewBoard = () => {
+  const label = `board-${boardsStore.boards.length}`;
+
+  boardsStore.createBoard(label);
 };
 </script>
 
@@ -187,6 +215,7 @@ export default {
     background-color: $white;
     flex-direction: column;
     width: 300px;
+    min-width: 300px;
     float: left;
     border-right: 1px solid $lines-light;
   }
@@ -205,6 +234,7 @@ export default {
   }
   &--hidden {
     width: 0px;
+    min-width: 0px;
   }
   @include respond-to("medium") {
     height: auto;
