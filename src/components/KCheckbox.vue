@@ -1,13 +1,27 @@
 <template>
-  <input class="checkbox__input" type="checkbox" />
-  <label class="checkbox">
+  <label class="checkbox"
+    ><input
+      class="checkbox__input"
+      type="checkbox"
+      :checked="modelValue"
+      @change="$emit('update:modelValue', $event.target.checked)"
+    />
     <slot> </slot>
 
     <span class="checkbox__checkmark"></span>
   </label>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    default: false,
+  },
+});
+
+defineEmits(["update:modelValue"]);
+</script>
 
 <style lang="scss" scoped>
 @use "/src/assets/scss/_variables.scss" as *;

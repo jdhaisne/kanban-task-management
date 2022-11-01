@@ -21,6 +21,7 @@
       :key="index"
       :col-name="column.name"
       :tasks="column.tasks"
+      :colIndex="index"
     ></KColumn>
     <div
       class="board__add-btn"

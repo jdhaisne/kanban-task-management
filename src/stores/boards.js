@@ -6,6 +6,8 @@ import { uniqueId } from "lodash";
 export const useBoardsStore = defineStore("boards", () => {
   const boards = ref([]);
   const currentIndex = ref(0);
+  const currentColumnIndex = ref(0);
+  const currentTaskIndex = ref(0);
 
   const createBoard = (newBoard) => {
     boards.value.push(newBoard);
@@ -24,6 +26,14 @@ export const useBoardsStore = defineStore("boards", () => {
   const getCurrentBoard = computed(() => {
     return boards.value[currentIndex.value];
   });
+  const getCurrentColumn = computed(() => {
+    return boards.value[currentIndex.value].columns[currentColumnIndex.value];
+  });
+
+  const getCurrentTask = computed(() => {
+    return boards.value[currentIndex.value].columns[currentColumnIndex.value]
+      .tasks[currentTaskIndex.value];
+  });
   const isBoardEmpty = computed(() => {
     if (
       boards.value[currentIndex.value] &&
@@ -38,8 +48,22 @@ export const useBoardsStore = defineStore("boards", () => {
     return 0;
   });
 
-  const setBoards = function (data) {
+  const getStatusList = computed(() => {
+    return boards.value[currentIndex.value].columns.map((col) => col.name);
+  });
+
+  const setBoards = (data) => {
     boards.value = data;
+  };
+
+  const moveTaskTo = (taskIndex, oldIndex, newIndex) => {
+    boards.value[currentIndex.value].columns[newIndex].tasks.push(
+      boards.value[currentIndex.value].columns[oldIndex].tasks[taskIndex]
+    );
+    boards.value[currentIndex.value].columns[oldIndex].tasks.splice(
+      taskIndex,
+      1
+    );
   };
 
   return {
@@ -52,5 +76,7 @@ export const useBoardsStore = defineStore("boards", () => {
     deleteBoard,
     getNbBoards,
     addColumn,
+    getStatusList,
+    moveTaskTo,
   };
 });

@@ -1,35 +1,58 @@
 <template>
-  <div class="task" :class="{ 'task--dark': responsiveStore.isDarkTheme }">
+  <div
+    class="task"
+    :class="{ 'task--dark': responsiveStore.isDarkTheme }"
+    @click="openModalViewTask()"
+  >
     <h1
       class="task__title"
       :class="{ 'task__title--dark': responsiveStore.isDarkTheme }"
     >
-      {{ taskName }}
+      {{ task.title }}
     </h1>
     <span class="task__sub"
-      >{{ nbSubstaskComplete }} of {{ nbSubstask }} substask</span
+      >{{ getSubtaskscompleted }} of {{ task.subtasks.length }} substask</span
     >
   </div>
+  <KModal v-if="isModalViewTaskOpen" @behind-click="closeModalViewTask()">
+    <KTaskModal :task="task"> </KTaskModal>
+  </KModal>
 </template>
 
 <script setup>
+import { computed, provide, ref } from "vue";
 import { useResponsiveStore } from "../stores/responsive";
+
 const props = defineProps({
-  taskName: {
-    type: String,
-    default: "",
+  task: {
+    type: Object,
+    default: {},
   },
-  nbSubstask: {
+  taskIndex: {
     type: Number,
-    default: 1,
-  },
-  nbSubstaskComplete: {
-    type: Number,
-    default: 0,
   },
 });
 
 const responsiveStore = useResponsiveStore();
+
+provide("taskIndex", props.taskIndex);
+
+const isModalViewTaskOpen = ref(false);
+
+const getSubtaskscompleted = computed(() => {
+  return props.task.subtasks.reduce((sum, subtask) => {
+    if (subtask.isCompleted) return sum + 1;
+    return sum;
+  }, 0);
+});
+
+const openModalViewTask = function () {
+  isModalViewTaskOpen.value = true;
+};
+
+const closeModalViewTask = function () {
+  isModalViewTaskOpen.value = false;
+};
 </script>
 
 <style lang="scss" scoped>

@@ -11,13 +11,8 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 const props = defineProps({ modelValue: [Boolean, Array] });
-const emit = defineEmits(["update:modelValue"]);
-
-const onChange = function (event) {
-  state.value = event.target.checked;
-};
+defineEmits(["update:modelValue"]);
 </script>
 
 <style lang="scss" scoped>

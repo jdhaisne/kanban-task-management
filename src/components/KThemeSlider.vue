@@ -23,8 +23,7 @@ import { useResponsiveStore } from "../stores/responsive";
 const responsive = useResponsiveStore();
 const darkToggle = ref(responsive.isDarkTheme);
 
-const onChange = function (event) {
-  console.log(event);
+const onChange = (event) => {
   responsive.setDarkTheme(event);
 };
 </script>

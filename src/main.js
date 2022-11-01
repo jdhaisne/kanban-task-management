@@ -12,8 +12,13 @@ import KModal from "./components/KModal.vue";
 import KSideBar from "./components/KSideBar.vue";
 import KSwitch from "./components/KSwitch.vue";
 import KTask from "./components/KTask.vue";
+import KTaskModal from "./components/KTaskModal.vue";
 import KTextField from "./components/KTextField.vue";
 import KThemeSlider from "./components/KThemeSlider.vue";
+import KUpdateViewTask from "./components/KUpdateViewTask";
+import KViewStatus from "./components/KViewStatus.vue";
+import KViewSubtasks from "./components/KViewSubtasks.vue";
+import KViewTask from "./components/KViewTask.vue";
 
 import dataBoards from "./assets/data/data.json";
 
@@ -34,8 +39,13 @@ app
   .component("KSideBar", KSideBar)
   .component("KSwitch", KSwitch)
   .component("KTask", KTask)
+  .component("KTaskModal", KTaskModal)
   .component("KTextField", KTextField)
   .component("KThemeSlider", KThemeSlider)
+  .component("KUpdateViewTask", KUpdateViewTask)
+  .component("KViewStatus", KViewStatus)
+  .component("KViewSubtasks", KViewSubtasks)
+  .component("KViewTask", KViewTask)
 
   .use(pinia);
 

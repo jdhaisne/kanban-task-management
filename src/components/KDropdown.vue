@@ -3,17 +3,17 @@
     <div
       class="dropdown__choice"
       :class="{ 'dropdown__choice--active': isVisible }"
-      @click="isVisible = !isVisible"
+      @click="onClickChoice()"
     >
-      {{ items[currentIndex] }}
-      <i class="dropdown__icon fa-solid fa-chevron-down"></i>
+      {{ items[selectedIndex] }}
+      <i v-if="!isDisabled" class="dropdown__icon fa-solid fa-chevron-down"></i>
     </div>
     <div
       class="dropdown__list"
       :class="{ 'dropdown__list--visible': isVisible }"
     >
       <div v-for="(item, index) in items" :key="index">
-        <div class="dropdown__list__item" @click="currentIndex = index">
+        <div class="dropdown__list__item" @click="onClickItem()">
           {{ item }}
         </div>
       </div>
@@ -29,10 +29,23 @@ const props = defineProps({
     type: Array,
     default: [],
   },
+  selectedIndex: { type: Number },
+  isDisabled: {
+    type: Boolean,
+    default: false,
+  },
 });
+const emit = defineEmits(["update:selectedIndex"]);
 
-let currentIndex = ref(0);
-let isVisible = ref(false);
+const isVisible = ref(false);
+
+const onClickChoice = () => {
+  if (!props.isDisabled) isVisible.value = !isVisible.value;
+};
+
+const onClickItem = () => {
+  if (!isDisabled) $emit("update:selectedIndex", index);
+};
 </script>
 
 <style lang="scss" scoped>
