@@ -17,7 +17,7 @@ import KHeaderBar from "./components/KHeaderBar.vue";
 import KSideBar from "./components/KSideBar.vue";
 
 const responsiveStore = useResponsiveStore();
-const resized = function () {
+const resized = () => {
   responsiveStore.setScreenWidth(window.innerWidth);
 };
 

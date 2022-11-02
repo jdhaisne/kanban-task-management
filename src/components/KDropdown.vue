@@ -13,7 +13,7 @@
       :class="{ 'dropdown__list--visible': isVisible }"
     >
       <div v-for="(item, index) in items" :key="index">
-        <div class="dropdown__list__item" @click="onClickItem()">
+        <div class="dropdown__list__item" @click="onClickItem(index)">
           {{ item }}
         </div>
       </div>
@@ -43,8 +43,8 @@ const onClickChoice = () => {
   if (!props.isDisabled) isVisible.value = !isVisible.value;
 };
 
-const onClickItem = () => {
-  if (!isDisabled) $emit("update:selectedIndex", index);
+const onClickItem = (index) => {
+  if (!props.isDisabled) emit("update:selectedIndex", index);
 };
 </script>
 

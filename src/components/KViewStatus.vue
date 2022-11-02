@@ -4,7 +4,7 @@
     <KDropdown
       :items="boardsStore.getStatusList"
       :selectedIndex="colIndex"
-      @update:selectedIndex="onUpdate($event)"
+      @update:selectedIndex="$emit('update:status'), $event"
     >
     </KDropdown>
   </div>
@@ -20,13 +20,15 @@ const props = defineProps({
     default: false,
   },
 });
+
+const emit = defineEmits("update:status");
 const colIndex = inject("colIndex");
 const taskIndex = inject("taskIndex");
 
 const boardsStore = useBoardsStore();
 
 const onUpdate = (index) => {
-  if (!isDisabled) boardsStore.moveTaskTo(taskIndex, colIndex, index);
+  if (!props.isDisabled) boardsStore.moveTaskTo(taskIndex, colIndex, index);
 };
 </script>
 

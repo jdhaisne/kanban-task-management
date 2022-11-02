@@ -16,15 +16,15 @@ export const useResponsiveStore = defineStore("responsive", () => {
     }
   });
 
-  const setScreenWidth = function (width) {
+  const setScreenWidth = (width) => {
     screenWidth.value = width;
   };
 
-  const setDarkTheme = function (isDark) {
+  const setDarkTheme = (isDark) => {
     isDarkTheme.value = isDark;
   };
 
-  const setSidebarHidden = function (isHidden) {
+  const setSidebarHidden = (isHidden) => {
     isSidebarHidden.value = isHidden;
   };
 

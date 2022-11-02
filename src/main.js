@@ -10,12 +10,15 @@ import KDropdown from "./components/KDropdown.vue";
 import KHeaderBar from "./components/KHeaderBar.vue";
 import KModal from "./components/KModal.vue";
 import KSideBar from "./components/KSideBar.vue";
+import KSubtaskForm from "./components/KSubtaskForm.vue";
 import KSwitch from "./components/KSwitch.vue";
 import KTask from "./components/KTask.vue";
+import KTaskForm from "./components/KTaskForm.vue";
 import KTaskModal from "./components/KTaskModal.vue";
+import KTextArea from "./components/KTextArea.vue";
 import KTextField from "./components/KTextField.vue";
 import KThemeSlider from "./components/KThemeSlider.vue";
-import KUpdateViewTask from "./components/KUpdateViewTask";
+import KUpdateTask from "./components/KUpdateTask.vue";
 import KViewStatus from "./components/KViewStatus.vue";
 import KViewSubtasks from "./components/KViewSubtasks.vue";
 import KViewTask from "./components/KViewTask.vue";
@@ -37,12 +40,15 @@ app
   .component("KHeaderBar", KHeaderBar)
   .component("KModal", KModal)
   .component("KSideBar", KSideBar)
+  .component("KSubtaskForm", KSubtaskForm)
   .component("KSwitch", KSwitch)
   .component("KTask", KTask)
+  .component("KTaskForm", KTaskForm)
   .component("KTaskModal", KTaskModal)
+  .component("KTextArea", KTextArea)
   .component("KTextField", KTextField)
   .component("KThemeSlider", KThemeSlider)
-  .component("KUpdateViewTask", KUpdateViewTask)
+  .component("KUpdateTask", KUpdateTask)
   .component("KViewStatus", KViewStatus)
   .component("KViewSubtasks", KViewSubtasks)
   .component("KViewTask", KViewTask)

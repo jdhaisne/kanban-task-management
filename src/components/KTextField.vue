@@ -28,7 +28,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelvalue"]);
+const emit = defineEmits(["update:modelValue"]);
 
 const currentValue = computed({
   get() {

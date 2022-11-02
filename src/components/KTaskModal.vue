@@ -9,7 +9,9 @@
         @click-behind-menu="closeModalTaskMenu()"
       ></KViewTask>
     </template>
-    <template v-else><KUpdateViewTask> </KUpdateViewTask></template>
+    <template v-else
+      ><KUpdateTask @updated="$emit('close')"> </KUpdateTask
+    ></template>
   </div>
 </template>
 
@@ -27,6 +29,8 @@ const props = defineProps({
   },
 });
 
+const emit = defineEmits(["close"]);
+
 const isEditMode = ref(false);
 const isModalTaskMenuVisible = ref(false);
 const onclickEdit = () => {
@@ -34,7 +38,6 @@ const onclickEdit = () => {
   closeModalTaskMenu();
 };
 const openModalTaskMenu = () => {
-  console.log("open");
   isModalTaskMenuVisible.value = true;
 };
 const closeModalTaskMenu = () => (isModalTaskMenuVisible.value = false);

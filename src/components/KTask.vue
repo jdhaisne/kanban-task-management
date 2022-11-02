@@ -15,7 +15,7 @@
     >
   </div>
   <KModal v-if="isModalViewTaskOpen" @behind-click="closeModalViewTask()">
-    <KTaskModal :task="task"> </KTaskModal>
+    <KTaskModal :task="task" @close="closeModalViewTask"> </KTaskModal>
   </KModal>
 </template>
 
@@ -46,11 +46,11 @@ const getSubtaskscompleted = computed(() => {
   }, 0);
 });
 
-const openModalViewTask = function () {
+const openModalViewTask = () => {
   isModalViewTaskOpen.value = true;
 };
 
-const closeModalViewTask = function () {
+const closeModalViewTask = () => {
   isModalViewTaskOpen.value = false;
 };
 </script>
