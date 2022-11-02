@@ -6,6 +6,7 @@ import "./assets/scss/index.scss";
 import KButton from "./components/KButton.vue";
 import KCheckbox from "./components/KCheckbox.vue";
 import KColumn from "./components/KColumn.vue";
+import KDeleteModal from "./components/KDeleteModal.vue";
 import KDropdown from "./components/KDropdown.vue";
 import KHeaderBar from "./components/KHeaderBar.vue";
 import KModal from "./components/KModal.vue";
@@ -36,6 +37,7 @@ app
   .component("KButton", KButton)
   .component("KCheckbox", KCheckbox)
   .component("KColumn", KColumn)
+  .component("KDeleteModal", KDeleteModal)
   .component("KDropdown", KDropdown)
   .component("KHeaderBar", KHeaderBar)
   .component("KModal", KModal)

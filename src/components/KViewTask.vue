@@ -19,7 +19,7 @@
       {{ task.description }}
     </p>
     <KViewSubtasks :subtasks="task.subtasks"> </KViewSubtasks>
-    <KViewStatus isDisabled></KViewStatus>
+    <KViewStatus :statusIndex="colIndex" isDisabled></KViewStatus>
   </div>
 
   <KModal
@@ -27,7 +27,7 @@
     @behind-click="$emit('clickBehindMenu')"
   >
     <span @click="$emit('clickEdit')">Edit Task</span>
-    <span> Delete Task </span></KModal
+    <span @click="$emit('clickDelete')"> Delete Task </span></KModal
   >
 </template>
 
@@ -50,7 +50,14 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["clickEdit", "clickMenuTask", "clickBehindMenu"]);
+const emit = defineEmits([
+  "clickEdit",
+  "clickMenuTask",
+  "clickBehindMenu",
+  "clickDelete",
+]);
+
+const colIndex = inject("colIndex", 0);
 
 const getSubtaskscompleted = computed(() => {
   return props.task.subtasks.reduce((sum, subtask) => {

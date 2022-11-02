@@ -3,8 +3,8 @@
     <h3>Current Status</h3>
     <KDropdown
       :items="boardsStore.getStatusList"
-      :selectedIndex="colIndex"
-      @update:selectedIndex="$emit('update:status'), $event"
+      :selectedIndex="statusIndex"
+      @update:selectedIndex="$emit('update:status', $event)"
     >
     </KDropdown>
   </div>
@@ -19,17 +19,15 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  statusIndex: {
+    type: Number,
+    default: undefined,
+  },
 });
 
-const emit = defineEmits("update:status");
-const colIndex = inject("colIndex");
-const taskIndex = inject("taskIndex");
+const emit = defineEmits(["update:status"]);
 
 const boardsStore = useBoardsStore();
-
-const onUpdate = (index) => {
-  if (!props.isDisabled) boardsStore.moveTaskTo(taskIndex, colIndex, index);
-};
 </script>
 
 <style lang="scss" scoped></style>

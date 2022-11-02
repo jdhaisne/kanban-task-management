@@ -97,21 +97,12 @@
       v-if="isModalCreateTaskVisible"
       @behind-click="closeCreateTaskModal()"
     >
-      <form>
-        <label for="title">Title</label>
-        <KTextField
-          id="title"
-          :modelValue="newTask.title"
-          @update:modelValue="(newValue) => (newTask.title = newValue)"
-        />
-
-        <label for="description">Description</label>
-        <KTextField
-          id="description"
-          :modelValue="newTask.desc"
-          @update:modelValue="(newValue) => (newTask.desc = newValue)"
-        />
-      </form>
+      <KTaskForm
+        :title="'Add New Task'"
+        :buttonText="'Create Task'"
+        @update:task="createTask"
+      >
+      </KTaskForm>
     </KModal>
     <KModal
       v-if="isModalBoardMenuVisible"
@@ -166,6 +157,11 @@ const newTask = ref({
 const boardListLength = computed(() => {
   return boardList.length;
 });
+
+const createTask = (newTask, statusIndex) => {
+  boardsStore.addTask(newTask, statusIndex);
+  isModalCreateTaskVisible.value = false;
+};
 
 const openSidebarModal = () => {
   isSidebarModalVisible.value = true;

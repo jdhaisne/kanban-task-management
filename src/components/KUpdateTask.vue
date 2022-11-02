@@ -2,7 +2,7 @@
   <KTaskForm
     :title="'Edit Task'"
     :buttonText="'Save Changes'"
-    :task="updatedTask"
+    :task="task"
     @update:task="onUpdate"
   >
   </KTaskForm>
@@ -11,25 +11,29 @@
 <script setup>
 import { inject, ref } from "vue";
 import { useBoardsStore } from "../stores/boards";
+const props = defineProps({
+  task: {
+    type: Object,
+    default: {},
+  },
+});
 
-const emit = defineEmits(["updated"]);
-
-const colIndex = inject("colIndex");
-const taskIndex = inject("taskIndex");
+const emit = defineEmits(["update"]);
 
 const boardsStore = useBoardsStore();
+const colIndex = inject("colIndex", 0);
+const taskIndex = inject("taskIndex", 0);
 
-const updatedTask = ref(
-  boardsStore.getCurrentBoard.columns[colIndex].tasks[taskIndex]
-);
-const onUpdate = (newTask) => {
-  console.log(newTask);
+const onUpdate = (newTask, newStatus) => {
   Object.assign(
     boardsStore.getCurrentBoard.columns[colIndex].tasks[taskIndex],
     newTask
   );
+  if (newStatus) {
+    boardsStore.moveTaskTo(taskIndex, colIndex, newStatus);
+  }
 
-  emit("updated");
+  emit("update");
 };
 </script>
 

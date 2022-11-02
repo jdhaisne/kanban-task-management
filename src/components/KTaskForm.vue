@@ -6,6 +6,7 @@
       id="taskTitle"
       :modelValue="newTask.title"
       @update:modelValue="(newValue) => (newTask.title = newValue)"
+      :placeholder="'e.g. Take coffe break'"
     >
     </KTextField>
     <label for="taskDescription"></label>
@@ -13,6 +14,7 @@
       id="taskDescription"
       :modelValue="newTask.description"
       @update:modelValue="(newValue) => (newTask.description = newValue)"
+      :placeholder="'e.g. It\'s always good to take a break. This 15 minute break will  recharge the batteries a little.'"
     ></KTextArea>
     <KSubtaskForm
       :subtasks="newTask.subtasks"
@@ -20,7 +22,11 @@
       @add:subtask="addSubtask"
       @delete:subtask="deleteSubtask"
     ></KSubtaskForm>
-    <KViewStatus @update:status=""> </KViewStatus>
+    <KViewStatus
+      :statusIndex="newStatus"
+      @update:status="(newValue) => (newStatus = newValue)"
+    >
+    </KViewStatus>
     <KButton @click="onSubmit">{{ buttonText }} </KButton>
   </div>
 </template>
@@ -47,28 +53,30 @@ const props = defineProps({
     },
   },
 });
-
+const colIndex = inject("colIndex", 0);
 const newTask = ref(Object.assign({}, props.task));
+const newStatus = ref(colIndex);
 // const newSubtasks = ref(Array.from(props.task.subtasks));
 
 const emit = defineEmits(["update:task"]);
 
 const updateSubstask = (newSubtask, index) => {
-  newTask.value.subtasks.value[index].title = newSubtask;
+  newTask.value.subtasks[index].title = newSubtask;
 };
 const addSubtask = () => {
-  newTask.value.subtasks.value.push({ title: "", isCompleted: false });
+  newTask.value.subtasks.push({ title: "", isCompleted: false });
 };
 
 const deleteSubtask = (index) => {
-  newTask.value.subtasks.value.splice(index, 1);
+  newTask.value.subtasks.splice(index, 1);
 };
 
 const updateStatus = () => {};
 
 const onSubmit = () => {
-  newTask.value.subtasks = newSubtasks.value;
-  emit("update:task", newTask.value);
+  // newTask.value.subtasks = newSubtasks.value;
+
+  emit("update:task", newTask.value, newStatus.value);
 };
 
 // const colIndex = inject("colIndex");

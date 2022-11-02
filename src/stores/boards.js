@@ -66,6 +66,17 @@ export const useBoardsStore = defineStore("boards", () => {
     );
   };
 
+  const addTask = (newTask, colIndex) => {
+    boards.value[currentIndex.value].columns[colIndex].tasks.push(newTask);
+  };
+
+  const deleteTask = (colIndex, taskIndex) => {
+    boards.value[currentIndex.value].columns[colIndex].tasks.splice(
+      taskIndex,
+      1
+    );
+  };
+
   return {
     boards,
     setBoards,
@@ -78,5 +89,7 @@ export const useBoardsStore = defineStore("boards", () => {
     addColumn,
     getStatusList,
     moveTaskTo,
+    addTask,
+    deleteTask,
   };
 });
