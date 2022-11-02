@@ -108,10 +108,20 @@
       v-if="isModalBoardMenuVisible"
       @behind-click="closeModalBoardMenu()"
     >
-      <span>Edit Board</span>
-      <span>Delete Board</span>
+      <span @click="clickEdit">Edit Board</span>
+      <span @click="clickDelete">Delete Board</span>
     </KModal>
-
+    <KModal v-if="isModalEditBoardVisible">
+      <KBoardForm
+        :board="boardsStore.getCurrentBoard"
+        :title="'Edit Board'"
+        :buttonText="'Save Changes'"
+        @update:board="updateBoard"
+      ></KBoardForm>
+    </KModal>
+    <KModal v-if="isModalDeleteBoardVisible">
+      <KDeleteModal @delete="onDelete" @cancel="onCancel"> </KDeleteModal>
+    </KModal>
     <!-- <div class="modal" v-if="isSidebarModalVisible">
       <div class="sidebar__list">
         <h2 class="sidebar__list__title">All Boards({{ boardListLength }})</h2>
@@ -135,11 +145,9 @@
 
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from "vue";
-import KButton from "./KButton.vue";
-import KSideBar from "./KSideBar.vue";
+
 import { useResponsiveStore } from "/src/stores/responsive.js";
 import { useBoardsStore } from "../stores/boards";
-import KModal from "./KModal.vue";
 
 const responsiveStore = useResponsiveStore();
 const boardsStore = useBoardsStore();
@@ -147,6 +155,8 @@ const boardList = ["Plateform Launch", "Marketing Plan", "Roadmap"];
 const isSidebarModalVisible = ref(false);
 const isModalCreateTaskVisible = ref(false);
 const isModalBoardMenuVisible = ref(false);
+const isModalEditBoardVisible = ref(false);
+const isModalDeleteBoardVisible = ref(false);
 const currentBoard = ref(0);
 const newTask = ref({
   title: "",
@@ -198,12 +208,29 @@ const currentBoardTitle = computed(() => {
   if (boardsStore.getCurrentBoard) return boardsStore.getCurrentBoard.name;
   return "";
 });
-// onMounted(() => {
-//   window.addEventListener("click", closeModal);
-// });
-// onUnmounted(() => {
-//   window.removeEventListener("click", closeModal);
-// });
+
+const clickEdit = () => {
+  isModalEditBoardVisible.value = true;
+  closeModalBoardMenu();
+};
+
+const clickDelete = () => {
+  isModalDeleteBoardVisible.value = true;
+  closeModalBoardMenu();
+};
+
+const onDelete = () => {
+  boardsStore.deleteCurrentBoard();
+  isModalDeleteBoardVisible.value = false;
+};
+
+const onCancel = () => {
+  isModalDeleteBoardVisible.value = false;
+};
+const updateBoard = (newBoard) => {
+  Object.assign(boardsStore.getCurrentBoard, newBoard);
+  isModalEditBoardVisible.value = false;
+};
 </script>
 
 <style lang="scss" scoped>

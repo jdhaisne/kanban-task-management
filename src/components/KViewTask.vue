@@ -1,26 +1,24 @@
 <template>
-  <div class="view-task">
-    <div class="view-task__title__wrapper">
-      <h2 class="view-task__title">
-        {{ task.title }}
-      </h2>
-      <div
-        class="view-task__title__icon__wrapper"
-        @click="$emit('clickMenuTask')"
-      >
-        <img
-          class="view-task__title__icon"
-          src="/src/assets/images/icon-vertical-ellipsis.svg"
-        />
-      </div>
+  <div class="view-task__title__wrapper">
+    <h2 class="view-task__title">
+      {{ task.title }}
+    </h2>
+    <div
+      class="view-task__title__icon__wrapper"
+      @click="$emit('clickMenuTask')"
+    >
+      <img
+        class="view-task__title__icon"
+        src="/src/assets/images/icon-vertical-ellipsis.svg"
+      />
     </div>
-
-    <p class="view-task__description">
-      {{ task.description }}
-    </p>
-    <KViewSubtasks :subtasks="task.subtasks"> </KViewSubtasks>
-    <KViewStatus :statusIndex="colIndex" isDisabled></KViewStatus>
   </div>
+
+  <p class="view-task__description">
+    {{ task.description }}
+  </p>
+  <KViewSubtasks :subtasks="task.subtasks"> </KViewSubtasks>
+  <KViewStatus :statusIndex="colIndex" isDisabled></KViewStatus>
 
   <KModal
     v-if="isModalTaskMenuVisible"

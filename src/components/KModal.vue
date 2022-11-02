@@ -58,6 +58,7 @@ const behindClick = () => {
   // max-width: 300px;
   padding: 1rem;
   min-height: 200px;
+  width: 80%;
   position: absolute;
   top: 50%;
   left: 50%;

@@ -23,6 +23,10 @@ export const useBoardsStore = defineStore("boards", () => {
     boards.value.splice(boardIndex, 1);
   };
 
+  const deleteCurrentBoard = () => {
+    boards.value.splice(currentIndex.value, 1);
+  };
+
   const getCurrentBoard = computed(() => {
     return boards.value[currentIndex.value];
   });
@@ -85,6 +89,7 @@ export const useBoardsStore = defineStore("boards", () => {
     isBoardEmpty,
     createBoard,
     deleteBoard,
+    deleteCurrentBoard,
     getNbBoards,
     addColumn,
     getStatusList,

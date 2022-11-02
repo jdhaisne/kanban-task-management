@@ -80,42 +80,11 @@
     </template>
   </div>
   <KModal v-if="ismodalCreateBoardOpen" @behind-click="closeCreateBoardModal()">
-    <h2>Add New Board</h2>
-
-    <label for="boardName">Board Name</label>
-    <KTextField
-      id="boardName"
-      placeholder="e.g web Design"
-      :modelValue="newBoard.name"
-      @update:modelValue="(newValue) => (newBoard.name = newValue)"
-    >
-    </KTextField>
-    <div>
-      <template v-for="(column, index) in newBoard.columns" :key="index">
-        <KTextField
-          :id="`column-${index}`"
-          placeholder="e.g To Do"
-          :modelValue="newBoard.columns[index].name"
-          @update:modelValue="
-            (newValue) => (newBoard.columns[index].name = newValue)
-          "
-          >{{ newBoard.columns[index].name }}
-        </KTextField></template
-      ><KButton
-        :width="295"
-        :height="40"
-        variant="secondary"
-        @click="addColumn()"
-        >+ Add New Column</KButton
-      >
-      <KButton
-        :width="295"
-        :height="40"
-        variant="secondary"
-        @click="createNewBoard()"
-        >Creat New Board</KButton
-      >
-    </div>
+    <KBoardForm
+      :title="'Add New Board'"
+      :buttonText="'Create New Board'"
+      @update:board="createNewBoard"
+    ></KBoardForm>
   </KModal>
 </template>
 
@@ -138,13 +107,8 @@ const boardsStore = useBoardsStore();
 
 const ismodalCreateBoardOpen = ref(false);
 
-const newBoard = ref({
-  name: "",
-  columns: [],
-});
-
-const createNewBoard = () => {
-  boardsStore.createBoard(newBoard.value);
+const createNewBoard = (newBoard) => {
+  boardsStore.createBoard(newBoard);
   ismodalCreateBoardOpen.value = false;
 };
 
@@ -155,15 +119,15 @@ const addColumn = () => {
   });
 };
 
-const resetNewBoard = () => {
-  newBoard.value = {
-    name: "",
-    columns: [],
-  };
-};
+// const resetNewBoard = () => {
+//   newBoard.value = {
+//     name: "",
+//     columns: [],
+//   };
+// };
 
 const openCreateBoardModal = () => {
-  resetNewBoard();
+  // resetNewBoard();
   ismodalCreateBoardOpen.value = true;
 };
 
