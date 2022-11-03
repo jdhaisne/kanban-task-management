@@ -1,13 +1,16 @@
 <template>
-  <div>
-    <h2>{{ title }}</h2>
-    <label for="boardName">Name</label>
-    <KTextField
-      id="boardName"
-      :modelValue="newBoard.name"
-      @update:modelValue="(newValue) => (newBoard.name = newValue)"
-      :placeholder="'e.g Web Design'"
-    ></KTextField>
+  <div class="form">
+    <h2 class="form__heading">{{ title }}</h2>
+    <div class="form__input">
+      <label class="form__label" for="boardName">Name</label>
+      <KTextField
+        id="boardName"
+        :modelValue="newBoard.name"
+        @update:modelValue="(newValue) => (newBoard.name = newValue)"
+        :placeholder="'e.g Web Design'"
+      ></KTextField>
+    </div>
+
     <KColumnInput
       :columns="newBoard.columns"
       @update:name="onUpdate"

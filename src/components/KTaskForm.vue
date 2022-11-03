@@ -1,21 +1,26 @@
 <template>
-  <div class="task-form">
-    <h3>{{ title }}</h3>
-    <label for="taskTitle">Title</label>
-    <KTextField
-      id="taskTitle"
-      :modelValue="newTask.title"
-      @update:modelValue="(newValue) => (newTask.title = newValue)"
-      :placeholder="'e.g. Take coffe break'"
-    >
-    </KTextField>
-    <label for="taskDescription"></label>
-    <KTextArea
-      id="taskDescription"
-      :modelValue="newTask.description"
-      @update:modelValue="(newValue) => (newTask.description = newValue)"
-      :placeholder="'e.g. It\'s always good to take a break. This 15 minute break will  recharge the batteries a little.'"
-    ></KTextArea>
+  <div class="task-form form">
+    <h3 class="form__heading">{{ title }}</h3>
+    <div class="form__input">
+      <label class="form__label" for="taskTitle">Title</label>
+      <KTextField
+        id="taskTitle"
+        :modelValue="newTask.title"
+        @update:modelValue="(newValue) => (newTask.title = newValue)"
+        :placeholder="'e.g. Take coffe break'"
+      >
+      </KTextField>
+    </div>
+    <div class="form__input">
+      <label class="form__label" for="taskDescription">Description</label>
+      <KTextArea
+        id="taskDescription"
+        :modelValue="newTask.description"
+        @update:modelValue="(newValue) => (newTask.description = newValue)"
+        :placeholder="'e.g. It\'s always good to take a break. This 15 minute break will  recharge the batteries a little.'"
+      ></KTextArea>
+    </div>
+
     <KSubtaskForm
       :subtasks="newTask.subtasks"
       @update:subtask="updateSubstask"
@@ -54,7 +59,7 @@ const props = defineProps({
   },
 });
 const colIndex = inject("colIndex", 0);
-const newTask = ref(Object.assign({}, props.task));
+const newTask = ref(JSON.parse(JSON.stringify(props.task)));
 const newStatus = ref(colIndex);
 // const newSubtasks = ref(Array.from(props.task.subtasks));
 

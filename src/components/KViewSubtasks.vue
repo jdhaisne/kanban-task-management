@@ -1,14 +1,18 @@
 <template>
-  <h3>
-    {{ `Subtasks (${getSubtaskscompleted} of ${subtasks.length})` }}
-  </h3>
-  <div class="subtask" v-for="(subtask, index) in subtasks" :key="index">
-    <KCheckbox
-      :modelValue="subtask.isCompleted"
-      @update:modelValue="onUpdate($event, index)"
-    >
-      {{ subtask.title }}
-    </KCheckbox>
+  <div class="subtasks__wrapper">
+    <h3 class="subtasks__title">
+      {{ `Subtasks (${getSubtaskscompleted} of ${subtasks.length})` }}
+    </h3>
+    <div class="subtask__wrapper">
+      <div class="subtask" v-for="(subtask, index) in subtasks" :key="index">
+        <KCheckbox
+          :modelValue="subtask.isCompleted"
+          @update:modelValue="onUpdate($event, index)"
+        >
+          {{ subtask.title }}
+        </KCheckbox>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -45,4 +49,26 @@ const onUpdate = (event, subtaskIndex) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use "/src/assets/scss/_variables.scss" as *;
+
+.subtasks {
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  &__title {
+    font: $heading-s;
+    color: $medium-grey;
+  }
+}
+
+.subtask {
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+</style>

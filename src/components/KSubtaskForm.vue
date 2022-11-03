@@ -1,18 +1,24 @@
 <template>
-  <div>
-    <h3>Subtask</h3>
+  <div class="form__input">
+    <h3 class="form__label">Subtask</h3>
     <div class="subtask" v-for="(subtask, index) in subtasks" :key="index">
       <KTextField
         :modelValue="subtask.title"
         @update:modelValue="$emit('update:subtask', $event, index)"
+        :placeholder="placeholderList[index]"
       >
         {{ subtask.title }}
       </KTextField>
-      <div @click="$emit('delete:subtask', index)">
-        <i class="icon icon--very-small icon-cross"></i>
+      <div
+        class="subtask__icon__wrapper"
+        @click="$emit('delete:subtask', index)"
+      >
+        <i class="subtask__icon icon icon--very-small icon-cross"></i>
       </div>
     </div>
-    <KButton @click="$emit('add:subtask')"> + Add New Subtask </KButton>
+    <KButton @click="$emit('add:subtask')" :variant="'secondary'">
+      + Add New Subtask
+    </KButton>
   </div>
 </template>
 
@@ -21,7 +27,14 @@ import { ref } from "vue";
 const props = defineProps({
   subtasks: {
     type: Array,
-    default: [],
+    default: () => [
+      { title: "", isCompleted: false },
+      { title: "", isCompleted: false },
+    ],
+  },
+  placeholderList: {
+    type: Array,
+    default: () => ["e.g. Make coffee", "e.g. Drink coffe & smile"],
   },
 });
 
@@ -32,6 +45,14 @@ const emit = defineEmits(["update:subtask", "add:subtask", "delete:subtask"]);
 <style lang="scss" scoped>
 .subtask {
   display: flex;
+  gap: 10px;
   justify-content: space-between;
+  &__icon {
+    margin: auto;
+    &__wrapper {
+      display: flex;
+      cursor: pointer;
+    }
+  }
 }
 </style>

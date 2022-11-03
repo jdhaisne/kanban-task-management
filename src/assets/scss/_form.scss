@@ -1,0 +1,20 @@
+
+@use "/src/assets/scss/_variables.scss" as *;
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    &__heading {
+        font-weight: 700;
+        font-size: 18px;
+    }
+    &__label {
+        font: $heading-s;
+        color: $medium-grey;
+    }
+    &__input {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+}

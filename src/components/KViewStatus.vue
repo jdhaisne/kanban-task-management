@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h3>Current Status</h3>
+  <div class="view-status">
+    <h3 class="view-status__title">Status</h3>
     <KDropdown
       :items="boardsStore.getStatusList"
       :selectedIndex="statusIndex"
@@ -30,4 +30,13 @@ const emit = defineEmits(["update:status"]);
 const boardsStore = useBoardsStore();
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use "/src/assets/scss/_variables.scss" as *;
+
+.view-status {
+  &__title {
+    font: $heading-s;
+    color: $medium-grey;
+  }
+}
+</style>

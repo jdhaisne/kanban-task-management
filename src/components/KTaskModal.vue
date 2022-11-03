@@ -1,5 +1,5 @@
 <template>
-  <div class="view-task">
+  <div class="task-modal">
     <template v-if="!isEditMode">
       <KViewTask
         :isModalTaskMenuVisible="isModalTaskMenuVisible"

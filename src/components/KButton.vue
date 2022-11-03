@@ -61,6 +61,7 @@ export default {};
 <style lang="scss" scoped>
 @use "/src/assets/scss/_variables.scss" as *;
 .button {
+  min-height: 40px;
   background: $main-purple;
   font: $body-l;
   border-radius: 24px;
@@ -73,6 +74,8 @@ export default {};
   &__content {
     margin: auto;
     display: flex;
+    font: $body-l;
+    font-weight: 700;
   }
   &--is-big {
     font-size: 15px;

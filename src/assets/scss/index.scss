@@ -1,8 +1,10 @@
 @use "src/assets/scss/_mixins.scss" as *;
+@use "/src/assets/scss/_variables.scss" as *;
 @import '_reset.scss';
-@import '_variables.scss';
+// @import '_variables.scss';
 @import '_icon.scss';
 @import '_font.scss';
+@import '_form.scss';
 @import '_heading.scss';
 
 

@@ -43,20 +43,22 @@ const currentValue = computed({
 <style lang="scss" scoped>
 @use "/src/assets/scss/_variables.scss" as *;
 .textfield {
-  min-width: 350px;
+  width: 100%;
   min-height: 40px;
+  padding-left: 10px;
   font: $heading-m;
   border: 1px solid rgba($medium-grey, 0.25);
   border-radius: 4px;
   user-select: none;
   &__wrapper {
     position: relative;
-    width: 350px;
+    width: 100%;
   }
   &--error {
     border-color: $red;
   }
   &:placeholder-shown {
+    font-weight: 500;
     color: $medium-grey;
   }
   &:focus-visible {

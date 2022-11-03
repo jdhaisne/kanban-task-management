@@ -6,9 +6,10 @@
       :checked="modelValue"
       @change="$emit('update:modelValue', $event.target.checked)"
     />
-    <slot> </slot>
-
     <span class="checkbox__checkmark"></span>
+    <span class="checkbox__text">
+      <slot> </slot>
+    </span>
   </label>
 </template>
 
@@ -27,11 +28,10 @@ defineEmits(["update:modelValue"]);
 @use "/src/assets/scss/_variables.scss" as *;
 .checkbox {
   font: $heading-s;
-  display: block;
+  display: flex;
+  gap: 25px;
+  padding: 10px;
   position: relative;
-  padding-top: 12px;
-  padding-left: 35px;
-  margin-bottom: 12px;
   cursor: pointer;
   font-size: 22px;
   -webkit-user-select: none;
@@ -42,10 +42,12 @@ defineEmits(["update:modelValue"]);
   background: $light-grey;
   max-width: 350px;
   border-radius: 4px;
-  height: 40px;
+  min-height: 40px;
 
   &:hover {
     background: $main-purple-hover;
+  }
+  &__wrapper {
   }
   &__input {
     position: absolute;
@@ -57,19 +59,22 @@ defineEmits(["update:modelValue"]);
     border-radius: 2px;
   }
   &__checkmark {
-    position: absolute;
-    top: 12px;
-    left: 9px;
+    display: block;
+    // position: absolute;
+    // top: 12px;
+    // left: 9px;
     height: 16px;
-    width: 16px;
+    min-width: 16px;
+    margin: auto 0;
     background-color: #eee;
     border: 2px rgba($medium-grey, 0.25) solid;
+    border-radius: 2px;
     &:after {
       content: "";
-      position: absolute;
+      position: relative;
       display: none;
-      left: 4px;
-      top: 1px;
+      left: 3.5px;
+
       width: 5px;
       height: 10px;
       border: solid white;
@@ -79,11 +84,21 @@ defineEmits(["update:modelValue"]);
       transform: rotate(45deg);
     }
   }
+  &__text {
+    font: $body-m;
+    color: $black;
+    margin: auto 0;
+  }
   & input:checked ~ .checkbox__checkmark {
     background-color: $main-purple;
   }
   & input:checked ~ .checkbox__checkmark:after {
     display: block;
+  }
+
+  & input:checked ~ .checkbox__text {
+    color: $medium-grey;
+    text-decoration: line-through;
   }
 }
 </style>

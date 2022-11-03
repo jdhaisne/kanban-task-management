@@ -1,11 +1,12 @@
 <template>
   <div class="textarea__wrapper">
-    <input
+    <textarea
       class="textarea"
       type="textarea"
       v-model="currentValue"
       :placeholder="placeholder"
-    />
+    >
+    </textarea>
   </div>
 </template>
 
@@ -34,4 +35,19 @@ const currentValue = computed({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use "/src/assets/scss/_variables.scss" as *;
+.textarea {
+  width: 100%;
+  min-height: 100px;
+  font: normal normal bold 15px/19px "Plus Jakarta Sans", sans-serif;
+  padding: 10px;
+  border: 1px solid rgba(130, 143, 163, 0.25);
+  border-radius: 4px;
+  user-select: none;
+  &:placeholder-shown {
+    font-weight: 500;
+    color: $medium-grey;
+  }
+}
+</style>
