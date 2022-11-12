@@ -74,6 +74,7 @@ const behindClick = () => {
 .modal {
   // width: 70%;
   // max-width: 300px;
+  max-width: 523px;
   padding: 20px;
   min-height: 200px;
   width: 95%;

@@ -6,8 +6,14 @@
       <KTextField
         id="taskTitle"
         :modelValue="newTask.title"
-        @update:modelValue="(newValue) => (newTask.title = newValue)"
+        @update:modelValue="
+          (newValue) => {
+            newTask.title = newValue;
+            formError.titleError = ' ';
+          }
+        "
         :placeholder="'e.g. Take coffe break'"
+        :errorMessage="formError.titleError"
       >
       </KTextField>
     </div>
@@ -61,6 +67,7 @@ const props = defineProps({
 const colIndex = inject("colIndex", 0);
 const newTask = ref(JSON.parse(JSON.stringify(props.task)));
 const newStatus = ref(colIndex);
+const formError = ref({ titleError: "", descriptionError: "" });
 // const newSubtasks = ref(Array.from(props.task.subtasks));
 
 const emit = defineEmits(["update:task"]);
@@ -76,12 +83,17 @@ const deleteSubtask = (index) => {
   newTask.value.subtasks.splice(index, 1);
 };
 
-const updateStatus = () => {};
+const onUpdateModelValue = (newValue) => {};
 
 const onSubmit = () => {
   // newTask.value.subtasks = newSubtasks.value;
-
-  emit("update:task", newTask.value, newStatus.value);
+  let hasError = false;
+  console.log(newTask);
+  if (!newTask.value.title) {
+    hasError = true;
+    formError.value.titleError = "error";
+  }
+  if (!hasError) emit("update:task", newTask.value, newStatus.value);
 };
 
 // const colIndex = inject("colIndex");

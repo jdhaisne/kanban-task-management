@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { computed, provide, ref } from "vue";
+import { computed, onMounted, onUnmounted, provide, ref } from "vue";
 import { useResponsiveStore } from "../stores/responsive";
 
 const props = defineProps({

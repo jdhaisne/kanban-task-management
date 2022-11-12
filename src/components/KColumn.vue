@@ -6,6 +6,8 @@
       :key="index"
       :task="task"
       :taskIndex="index"
+      @drag="onDrag"
+      draggable
     ></KTask>
   </div>
 </template>
@@ -30,6 +32,10 @@ const props = defineProps({
 });
 
 provide("colIndex", props.colIndex);
+
+const onDrag = () => {
+  console.log("drag");
+};
 </script>
 
 <style lang="scss" scoped>

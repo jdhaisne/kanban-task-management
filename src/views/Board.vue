@@ -31,7 +31,7 @@
       <span class="board__add-btn__text">+ New Column</span>
     </div>
   </div>
-  <KModal v-if="isOpen"></KModal>
+  <KModal v-if="isOpen" @behind-click="closeAddColumn"></KModal>
 </template>
 
 <script setup>
@@ -48,6 +48,10 @@ const boardsStore = useBoardsStore();
 
 const onAddColumn = () => {
   isOpen.value = true;
+};
+
+const closeAddColumn = () => {
+  isOpen.value = false;
 };
 </script>
 
