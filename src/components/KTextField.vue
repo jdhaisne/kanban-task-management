@@ -2,11 +2,15 @@
   <div class="textfield__wrapper">
     <input
       v-bind="$attrs"
-      class="textfield"
+      class="textfield form__text"
+      :class="{
+        'textfield--error': errorMessage,
+        'form__text--dark': responsiveStore.isDarkTheme,
+        'textfield--dark': responsiveStore.isDarkTheme,
+      }"
       type="text"
       v-model="currentValue"
       :placeholder="placeholder"
-      :class="{ 'textfield--error': errorMessage }"
     />
     <span class="textfield__error-message">{{ errorMessage }}</span>
   </div>
@@ -14,6 +18,7 @@
 
 <script setup>
 import { computed } from "vue";
+import { useResponsiveStore } from "../stores/responsive";
 const props = defineProps({
   placeholder: {
     type: String,
@@ -29,6 +34,8 @@ const props = defineProps({
 });
 
 const emit = defineEmits(["update:modelValue"]);
+
+const responsiveStore = useResponsiveStore();
 
 const currentValue = computed({
   get() {
@@ -46,23 +53,12 @@ const currentValue = computed({
   width: 100%;
   min-height: 40px;
   padding-left: 10px;
-  font: $heading-m;
   border: 1px solid rgba($medium-grey, 0.25);
   border-radius: 4px;
   user-select: none;
   &__wrapper {
     position: relative;
     width: 100%;
-  }
-  &--error {
-    border-color: $red;
-  }
-  &:placeholder-shown {
-    font-weight: 500;
-    color: $medium-grey;
-  }
-  &:focus-visible {
-    outline: none;
   }
   &__error-message {
     text-align: right;
@@ -71,6 +67,19 @@ const currentValue = computed({
     right: 8px;
     font: $heading-m;
     color: $red;
+  }
+  &--error {
+    border-color: $red;
+  }
+  &--dark {
+    background-color: $dark-grey;
+  }
+  &:placeholder-shown {
+    font-weight: 500;
+    color: $medium-grey;
+  }
+  &:focus-visible {
+    outline: none;
   }
 }
 </style>

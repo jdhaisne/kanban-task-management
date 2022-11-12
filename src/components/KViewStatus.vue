@@ -1,6 +1,11 @@
 <template>
   <div class="view-status">
-    <h3 class="view-status__title">Status</h3>
+    <h3
+      class="form__text"
+      :class="{ 'form__text--dark': responsiveStore.isDarkTheme }"
+    >
+      Status
+    </h3>
     <KDropdown
       :items="boardsStore.getStatusList"
       :selectedIndex="statusIndex"
@@ -13,6 +18,7 @@
 <script setup>
 import { inject } from "vue";
 import { useBoardsStore } from "../stores/boards";
+import { useResponsiveStore } from "../stores/responsive";
 
 const props = defineProps({
   isDisabled: {
@@ -28,15 +34,9 @@ const props = defineProps({
 const emit = defineEmits(["update:status"]);
 
 const boardsStore = useBoardsStore();
+const responsiveStore = useResponsiveStore();
 </script>
 
 <style lang="scss" scoped>
 @use "/src/assets/scss/_variables.scss" as *;
-
-.view-status {
-  &__title {
-    font: $heading-s;
-    color: $medium-grey;
-  }
-}
 </style>

@@ -1,7 +1,10 @@
 <template>
   <div class="view-task">
     <div class="view-task__title__wrapper">
-      <h2 class="view-task__title">
+      <h2
+        class="view-task__title"
+        :class="{ 'view-task__title--dark': responsiveStore.isDarkTheme }"
+      >
         {{ task.title }}
       </h2>
       <div
@@ -41,6 +44,7 @@
 
 <script setup>
 import { computed, inject, ref } from "vue";
+import { useResponsiveStore } from "../stores/responsive";
 
 const props = defineProps({
   task: {
@@ -65,6 +69,7 @@ const emit = defineEmits([
   "clickDelete",
 ]);
 
+const responsiveStore = useResponsiveStore();
 const colIndex = inject("colIndex", 0);
 
 const getSubtaskscompleted = computed(() => {
@@ -91,12 +96,16 @@ export default {
     &__wrapper {
       display: flex;
       gap: 5px;
+      justify-content: space-between;
     }
     &__icon {
       margin: auto;
       &__wrapper {
-        flex-grow: 1;
+        // flex-grow: 1;
       }
+    }
+    &--dark {
+      color: $white;
     }
   }
   &__description {

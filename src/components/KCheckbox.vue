@@ -1,19 +1,29 @@
 <template>
-  <label class="checkbox"
+  <label
+    class="checkbox form"
+    :class="{ 'checkbox--dark': responsiveStore.isDarkTheme }"
     ><input
       class="checkbox__input"
       type="checkbox"
       :checked="modelValue"
       @change="$emit('update:modelValue', $event.target.checked)"
     />
-    <span class="checkbox__checkmark"></span>
-    <span class="checkbox__text">
+    <span
+      class="checkbox__checkmark"
+      :class="{ 'checkbox__checkmark--dark': responsiveStore.isDarkTheme }"
+    ></span>
+    <span
+      class="checkbox__text form__text"
+      :class="{ 'form__text--dark': responsiveStore.isDarkTheme }"
+    >
       <slot> </slot>
     </span>
   </label>
 </template>
 
 <script setup>
+import { useResponsiveStore } from "../stores/responsive";
+
 const props = defineProps({
   modelValue: {
     type: Boolean,
@@ -22,14 +32,15 @@ const props = defineProps({
 });
 
 defineEmits(["update:modelValue"]);
+
+const responsiveStore = useResponsiveStore();
 </script>
 
 <style lang="scss" scoped>
 @use "/src/assets/scss/_variables.scss" as *;
 .checkbox {
   font: $heading-s;
-  display: flex;
-  gap: 25px;
+  flex-direction: row;
   padding: 10px;
   position: relative;
   cursor: pointer;
@@ -40,7 +51,7 @@ defineEmits(["update:modelValue"]);
   user-select: none;
 
   background: $light-grey;
-  max-width: 350px;
+
   border-radius: 4px;
   min-height: 40px;
 
@@ -69,6 +80,9 @@ defineEmits(["update:modelValue"]);
     background-color: #eee;
     border: 2px rgba($medium-grey, 0.25) solid;
     border-radius: 2px;
+    &--dark {
+      background-color: $dark-grey;
+    }
     &:after {
       content: "";
       position: relative;
@@ -85,9 +99,13 @@ defineEmits(["update:modelValue"]);
     }
   }
   &__text {
-    font: $body-m;
-    color: $black;
     margin: auto 0;
+  }
+  &--dark {
+    background-color: $very-dark-grey-dark-bg;
+    &:hover {
+      background-color: $main-purple;
+    }
   }
   & input:checked ~ .checkbox__checkmark {
     background-color: $main-purple;

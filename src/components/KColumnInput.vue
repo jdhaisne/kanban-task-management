@@ -1,6 +1,11 @@
 <template>
   <div class="form__input">
-    <h3 class="form__label">Columns</h3>
+    <h3
+      class="form__label"
+      :class="{ 'form__text--dark': responsiveStore.isDarkTheme }"
+    >
+      Board Columns
+    </h3>
     <div class="column-input__wrapper">
       <div
         class="column-input"
@@ -27,6 +32,8 @@
 
 <script setup>
 import { ref } from "vue";
+import { useResponsiveStore } from "../stores/responsive";
+
 const props = defineProps({
   columns: {
     type: Array,
@@ -35,6 +42,7 @@ const props = defineProps({
 });
 const emit = defineEmits(["update:name", "add:column", "delete:column"]);
 
+const responsiveStore = useResponsiveStore();
 const newColumns = props.columns;
 
 // const updateName = (name, index) => {

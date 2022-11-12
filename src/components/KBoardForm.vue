@@ -1,8 +1,19 @@
 <template>
   <div class="form">
-    <h2 class="form__heading">{{ title }}</h2>
+    <h2
+      class="form__heading"
+      :class="{ 'form__text--dark': responsiveStore.isDarkTheme }"
+    >
+      {{ title }}
+    </h2>
     <div class="form__input">
-      <label class="form__label" for="boardName">Name</label>
+      <label
+        class="form__label"
+        :class="{ 'form__text--dark': responsiveStore.isDarkTheme }"
+        f
+        or="boardName"
+        >Name</label
+      >
       <KTextField
         id="boardName"
         :modelValue="newBoard.name"
@@ -25,6 +36,8 @@
 
 <script setup>
 import { ref } from "vue";
+import { useResponsiveStore } from "../stores/responsive";
+
 const props = defineProps({
   board: {
     type: Object,
@@ -42,6 +55,7 @@ const props = defineProps({
 
 const emit = defineEmits(["update:board"]);
 
+const responsiveStore = useResponsiveStore();
 const newBoard = JSON.parse(JSON.stringify(props.board));
 
 const onUpdate = (newName, index) => {

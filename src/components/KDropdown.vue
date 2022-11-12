@@ -1,8 +1,14 @@
 <template>
-  <div class="dropdown">
+  <div
+    class="dropdown"
+    :class="{ 'dropdown--dark': responsiveStore.isDarkTheme }"
+  >
     <div
       class="dropdown__choice"
-      :class="{ 'dropdown__choice--active': isVisible }"
+      :class="{
+        'dropdown__choice--active': isVisible,
+        'dropdown__choice--dark': responsiveStore.isDarkTheme,
+      }"
       @click="onClickChoice()"
     >
       {{ items[selectedIndex] }}
@@ -23,6 +29,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { useResponsiveStore } from "../stores/responsive";
 
 const props = defineProps({
   items: {
@@ -36,6 +43,8 @@ const props = defineProps({
   },
 });
 const emit = defineEmits(["update:selectedIndex"]);
+
+const responsiveStore = useResponsiveStore();
 
 const isVisible = ref(false);
 
@@ -51,19 +60,21 @@ const onClickItem = (index) => {
 <style lang="scss" scoped>
 @use "/src/assets/scss/_variables.scss" as *;
 .dropdown {
-  font: $heading-m;
+  font: $body-l;
   margin: 5px;
   border-radius: 4px;
   //   position: relative;
   &__choice {
     padding: 10px 4px;
-    max-width: 350px;
     min-height: 40px;
-    border: 1px solid $medium-grey;
+    border: 1px solid rgba($medium-grey, 0.25);
     border-radius: 4px;
     &--active {
       border-color: $main-purple-hover;
     }
+    // &--dark {
+    //   border-color: rgba(130, 143, 163, 0.25);
+    // }
   }
   &__icon {
     float: right;
@@ -76,6 +87,9 @@ const onClickItem = (index) => {
     &--visible {
       display: block;
     }
+  }
+  &--dark {
+    color: $white;
   }
 }
 </style>

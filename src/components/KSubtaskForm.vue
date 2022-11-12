@@ -1,6 +1,11 @@
 <template>
   <div class="form__input">
-    <h3 class="form__label">Subtask</h3>
+    <h3
+      class="form__label"
+      :class="{ 'form__text--dark': responsiveStore.isDarkTheme }"
+    >
+      Subtask
+    </h3>
     <div class="subtask" v-for="(subtask, index) in subtasks" :key="index">
       <KTextField
         :modelValue="subtask.title"
@@ -24,6 +29,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { useResponsiveStore } from "../stores/responsive";
 const props = defineProps({
   subtasks: {
     type: Array,
@@ -38,8 +44,10 @@ const props = defineProps({
   },
 });
 
-const newSubtasks = ref([]);
 const emit = defineEmits(["update:subtask", "add:subtask", "delete:subtask"]);
+
+const responsiveStore = useResponsiveStore();
+const newSubtasks = ref([]);
 </script>
 
 <style lang="scss" scoped>

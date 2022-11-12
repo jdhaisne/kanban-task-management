@@ -1,8 +1,18 @@
 <template>
   <div class="task-form form">
-    <h3 class="form__heading">{{ title }}</h3>
+    <h3
+      class="form__heading"
+      :class="{ 'form__heading--dark': responsiveStore.isDarkTheme }"
+    >
+      {{ title }}
+    </h3>
     <div class="form__input">
-      <label class="form__label" for="taskTitle">Title</label>
+      <label
+        class="form__label"
+        :class="{ 'form__text--dark': responsiveStore.isDarkTheme }"
+        for="taskTitle"
+        >Title</label
+      >
       <KTextField
         id="taskTitle"
         :modelValue="newTask.title"
@@ -18,7 +28,12 @@
       </KTextField>
     </div>
     <div class="form__input">
-      <label class="form__label" for="taskDescription">Description</label>
+      <label
+        class="form__label"
+        :class="{ 'form__text--dark': responsiveStore.isDarkTheme }"
+        for="taskDescription"
+        >Description</label
+      >
       <KTextArea
         id="taskDescription"
         :modelValue="newTask.description"
@@ -45,6 +60,7 @@
 <script setup>
 import { inject, ref } from "vue";
 import { useBoardsStore } from "../stores/boards";
+import { useResponsiveStore } from "../stores/responsive";
 
 const props = defineProps({
   title: {
@@ -64,13 +80,14 @@ const props = defineProps({
     },
   },
 });
+const emit = defineEmits(["update:task"]);
+
+const responsiveStore = useResponsiveStore();
 const colIndex = inject("colIndex", 0);
 const newTask = ref(JSON.parse(JSON.stringify(props.task)));
 const newStatus = ref(colIndex);
 const formError = ref({ titleError: "", descriptionError: "" });
 // const newSubtasks = ref(Array.from(props.task.subtasks));
-
-const emit = defineEmits(["update:task"]);
 
 const updateSubstask = (newSubtask, index) => {
   newTask.value.subtasks[index].title = newSubtask;
@@ -106,4 +123,13 @@ const onSubmit = () => {
 // );
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@use "../assets/scss/_variables.scss" as *;
+.form {
+  &__heading {
+    &--dark {
+      color: $white;
+    }
+  }
+}
+</style>

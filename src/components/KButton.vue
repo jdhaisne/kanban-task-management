@@ -12,6 +12,7 @@
 
 <script setup>
 import { computed } from "vue";
+import { useResponsiveStore } from "../stores/responsive";
 
 const props = defineProps({
   width: {
@@ -39,12 +40,14 @@ const props = defineProps({
   },
 });
 
+const responsiveStore = useResponsiveStore();
+
 const buttonClasses = computed(() => {
   const classes = [`button--${props.variant}`];
   if (props.isBig) {
     classes.push("button--is-big");
   }
-  if (props.isDark) {
+  if (responsiveStore.isDarkTheme) {
     classes.push("button--dark");
   }
 
@@ -81,11 +84,6 @@ export default {};
     font-size: 15px;
     line-height: 18px;
   }
-
-  &:hover {
-    background-color: $main-purple-hover;
-  }
-
   &--secondary {
     background: rgba($main-purple, 0.1);
     color: $main-purple;
@@ -97,13 +95,17 @@ export default {};
       color: $main-purple;
     }
   }
-
   &--destructive {
     background: $red;
 
     &:hover {
       background: $red-hover;
     }
+  }
+  &:hover {
+    background-color: $main-purple-hover;
+  }
+  &--dark {
   }
 }
 </style>
