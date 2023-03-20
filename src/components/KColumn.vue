@@ -1,14 +1,22 @@
 <template>
   <div class="column">
     <h1 class="column__title">{{ colName }}</h1>
-    <KTask
+    <div
       v-for="(task, index) in tasks"
-      :key="index"
-      :task="task"
-      :taskIndex="index"
-      @drag="onDrag"
-      draggable
-    ></KTask>
+      @dragover="onDragOver($event, index)"
+      @drop="onDrop($event, index)"
+      class="dropzone"
+    >
+      <KTask
+        :key="index"
+        :task="task"
+        :taskIndex="index"
+        @dragged="onDrag($event, index)"
+        :draggedX="draggedX"
+        :draggedY="draggedY"
+        isDraggable
+      ></KTask>
+    </div>
   </div>
 </template>
 
@@ -33,8 +41,27 @@ const props = defineProps({
 
 provide("colIndex", props.colIndex);
 
-const onDrag = () => {
-  console.log("drag");
+let draggedIndex = null;
+let draggedX = null;
+let draggedY = null;
+
+const onDrag = (event, index) => {
+  draggedIndex = index;
+  console.log("drag", event);
+};
+
+const onDragOver = (event, index) => {
+  console.log("over", index);
+  event.preventDefault();
+};
+
+const onDrop = (event, index) => {
+  console.log("drop", index);
+  const temp = props.tasks[draggedIndex];
+  props.tasks.splice(draggedIndex, 1);
+  props.tasks.splice(index, 0, temp);
+  draggedX = 0;
+  draggedY = 0;
 };
 </script>
 

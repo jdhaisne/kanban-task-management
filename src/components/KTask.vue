@@ -1,8 +1,18 @@
 <template>
   <div
     class="task"
-    :class="{ 'task--dark': responsiveStore.isDarkTheme }"
+    :class="{
+      'task--dark': responsiveStore.isDarkTheme,
+      'task--draggable': isDraggable,
+      'task--dragged': draggedX,
+    }"
+    :style="{
+      left: draggedX + 'px',
+      height: draggedY + 'px',
+    }"
     @click="openModalViewTask()"
+    :draggable="isDraggable"
+    @dragstart="$emit('dragged', $event)"
   >
     <h1
       class="task__title"
@@ -31,7 +41,21 @@ const props = defineProps({
   taskIndex: {
     type: Number,
   },
+  isDraggable: {
+    type: Boolean,
+    default: false,
+  },
+  draggedX: {
+    type: Number,
+    default: undefined,
+  },
+  draggedY: {
+    type: Number,
+    default: undefined,
+  },
 });
+
+const emits = defineEmits(["dragged"]);
 
 const responsiveStore = useResponsiveStore();
 
@@ -77,6 +101,16 @@ const closeModalViewTask = () => {
   &--dark {
     background-color: $dark-grey;
   }
+  &__dragged {
+    position: relative;
+    left: 100px;
+    right: 100px;
+  }
+  // &--draggable {
+  //   position: absolute
+  //   width: 208px;
+  //   height: 110px;
+  // }
   &:hover {
     & .task__title {
       color: $main-purple;
